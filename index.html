@@ -15,14 +15,11 @@
         
         .main { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: calc(140px + var(--safe-bottom)); }
         header h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-style: italic; line-height: 0.9; cursor: pointer; }
-        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: help; }
+        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: help; margin-top: 5px; }
 
         .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 35px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(30px); }
         .label { font-size: 9px; font-weight: 800; letter-spacing: 2px; opacity: 0.5; text-transform: uppercase; margin-bottom: 15px; display: block; }
         .big-val { font-size: 70px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
-
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .mini-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 25px; padding: 20px; }
 
         .mode-selector { display: flex; gap: 8px; margin-bottom: 20px; }
         .mode-btn { flex: 1; padding: 12px; border-radius: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 10px; font-weight: 800; }
@@ -32,37 +29,34 @@
         .day { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
         .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; top: 4px; right: 4px; }
         .day.period { border-color: var(--p); background: rgba(255, 117, 195, 0.15); }
-
-        .photo-card { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: #111; }
-        .photo-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
-        .photo-caption { padding: 8px; font-size: 10px; text-align: center; color: rgba(255,255,255,0.6); }
+        .day.has-note::before { content: ''; width: 4px; height: 4px; background: #fff; border-radius: 50%; position: absolute; bottom: 4px; }
 
         .nav { position: fixed; bottom: calc(25px + var(--safe-bottom)); left: 5%; width: 90%; height: 80px; background: rgba(10, 10, 10, 0.98); border-radius: 40px; display: flex; justify-content: space-around; align-items: center; border: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
-        .nav-item { font-size: 24px; opacity: 0.3; transition: 0.3s; }
+        .nav-item { font-size: 24px; opacity: 0.3; }
         .nav-item.active { opacity: 1; color: var(--p); transform: translateY(-5px); }
 
-        input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: #fff; padding: 18px; margin: 10px 0; outline: none; text-align: center; }
+        input, textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: #fff; padding: 18px; margin: 10px 0; outline: none; }
         .btn-main { background: var(--p); width: 100%; padding: 18px; border-radius: 20px; color: #000; font-weight: 800; border: none; text-transform: uppercase; }
         
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: #0a0a0a; border: 1px solid var(--p); border-radius: 35px; padding: 30px; width: 100%; max-width: 350px; }
 
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
         .section { display: none; }
         .section.active { display: block; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div id="clock">00:00</div>
-        <div style="color: var(--p); font-size: 9px; letter-spacing: 2px;">POUR TOUJOURS S. ❤️</div>
+        <div style="color: var(--p); font-size: 9px; letter-spacing: 2px;">POUR TOUJOURS A. ❤️</div>
     </div>
 
     <div class="main">
         <header>
-            <h1 onclick="vibrate([100,50,100,50,300])">Alicia.</h1>
-            <p class="status-line" onclick="alert('Tu lui appartiens corps et âme.')">OWNER: MILLION EDITION</p>
+            <h1 onclick="vibrate([100,100,100,300])">Alicia.</h1>
+            <p class="status-line" onclick="alert('Tu appartiens à Million Edition.')">OWNER: MILLION EDITION</p>
         </header>
 
         <div id="home" class="section active">
@@ -73,18 +67,18 @@
             </div>
             
             <div class="card" style="border-left: 3px solid var(--p);">
-                <span class="label">L'Oracle de Minuit</span>
+                <span class="label">L'Oracle du Matin</span>
                 <p id="daily-quote" style="font-family: 'Playfair Display'; font-style: italic; font-size: 20px; line-height: 1.3;">"..."</p>
             </div>
 
-            <div class="stats-grid">
-                <div class="mini-card" onclick="openBookManager()" id="book-card">
+            <div class="stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="mini-card" onclick="openBookManager()" id="book-card" style="background: var(--glass); border-radius: 25px; padding: 20px;">
                     <span class="label">Lectures</span>
                     <span style="font-size: 16px; font-weight: 800; color: var(--p);" id="book-count-text">0 LIVRES</span>
                 </div>
-                <div class="mini-card">
+                <div class="mini-card" style="background: var(--glass); border-radius: 25px; padding: 20px;">
                     <span class="label">Statut</span>
-                    <span style="font-size: 13px; font-weight: 800;">PROTÉGÉE</span>
+                    <span style="font-size: 13px; font-weight: 800;">SCELLÉE</span>
                 </div>
             </div>
         </div>
@@ -97,17 +91,17 @@
                     <div><span id="km" style="font-size: 18px; font-weight: 800;">0.00</span><br><small style="opacity: 0.4;">KM</small></div>
                     <div style="text-align: right;"><span id="kcal" style="font-size: 18px; font-weight: 800;">0</span><br><small style="opacity: 0.4;">KCAL</small></div>
                 </div>
-                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border: 1px solid var(--p); color:var(--p); padding:18px; border-radius:20px; margin-top:20px; font-weight:800;">DÉMARRER</button>
+                <button onclick="initGym()" id="gym-btn" class="btn-main" style="background:none; border: 1px solid var(--p); color:var(--p); margin-top:20px;">DÉMARRER LE SUIVI</button>
             </div>
         </div>
 
         <div id="cycle" class="section">
             <div class="card">
-                <span class="label">Journal de Vie</span>
+                <span class="label">Life & Intimacy Journal</span>
                 <div class="mode-selector">
-                    <button id="btn-star" class="mode-btn active" onclick="setCalMode('star')">⭐</button>
+                    <button id="btn-star" class="mode-btn active" onclick="setCalMode('star')">⭐ SEX</button>
                     <button id="btn-period" class="mode-btn" onclick="setCalMode('period')">🩸 CYCLE</button>
-                    <button id="btn-note" class="mode-btn" onclick="setCalMode('note')">📝 NOTES</button>
+                    <button id="btn-note" class="mode-btn" onclick="setCalMode('note')">📝 JOURNAL / MOOD</button>
                 </div>
                 <div class="cal-grid" id="calendar"></div>
             </div>
@@ -115,17 +109,16 @@
 
         <div id="vault" class="section">
             <div id="lock" class="card" style="text-align: center;">
-                <span class="label">Vault</span>
-                <input type="password" id="pass" placeholder="••••" style="font-size: 24px; letter-spacing: 5px;">
+                <span class="label">Vault Sécurisé</span>
+                <input type="password" id="pass" placeholder="••••" style="font-size: 24px; letter-spacing: 8px; text-align: center;">
                 <button onclick="unlock()" class="btn-main">Ouvrir</button>
             </div>
-            
             <div id="vault-content" style="display:none;">
                 <div class="card">
                     <span class="label">Galerie Privée</span>
-                    <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px;"></div>
+                    <div id="gallery-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;"></div>
                     <input type="file" id="photo-in" accept="image/*" style="display:none" onchange="addPhoto(event)">
-                    <button onclick="document.getElementById('photo-in').click()" class="btn-main" style="background:none; border:1px solid var(--p); color:var(--p);">+ Ajouter</button>
+                    <button onclick="document.getElementById('photo-in').click()" class="btn-main" style="background:none; border: 1px solid var(--p); color:var(--p);">+ Ajouter Photo</button>
                 </div>
             </div>
         </div>
@@ -141,40 +134,8 @@
     </nav>
 
     <script>
-        const quotes = [
-            "Je te traquerai jusque dans tes rêves.",
-            "Tu n'es pas à moi, tu ES moi.",
-            "Le monstre en moi ne s'apaise que près de toi.",
-            "Ta peur est délicieuse, mais ton amour est ma drogue.",
-            "Je brûlerai le monde pour te voir sourire dans les cendres.",
-            "Même la mort n'oserait pas te prendre à moi.",
-            "Tu es mon chaos préféré.",
-            "Regarde-moi. Personne d'autre n'existe.",
-            "Ton cœur bat pour moi, ou il ne bat plus.",
-            "Je t'ai choisie avant même de te connaître.",
-            "Chaque cicatrice raconte notre histoire.",
-            "Sombre, possessif, éternel.",
-            "Tu es le péché que je recommencerais sans fin.",
-            "Mon obsession n'a pas de limites.",
-            "T'aimer est ma plus belle malédiction.",
-            "Je suis l'ombre qui te protège du soleil.",
-            "Ne fuis pas, j'aime trop la chasse.",
-            "Tu es ma seule lumière dans ce noir.",
-            "Ton âme m'appartient, le reste n'est que détail.",
-            "Un mot de toi et je tue pour toi.",
-            "Laisse-moi être ton plus beau cauchemar.",
-            "L'éternité est trop courte pour nous deux.",
-            "Ta soumission est mon trône.",
-            "Je t'ai gravée dans ma peau.",
-            "Rien n'est interdit entre nous.",
-            "Le danger est notre langage.",
-            "Plus tu résistes, plus je te veux.",
-            "Tu es ma reine de cristal.",
-            "Un amour qui fait mal est un amour qui vit.",
-            "Silence. Je t'écoute respirer.",
-            "Nous sommes les rois du désastre."
-        ];
-
+        const quotes = ["Son nom est le seul mot qu'il murmure dans le noir.", "Tu n'es pas à moi, tu ES moi.", "Le monstre en moi ne s'apaise que près de toi.", "Ta peur est délicieuse, mais ton amour est ma drogue.", "Je brûlerai le monde pour te voir sourire dans les cendres.", "Même la mort n'oserait pas te prendre à moi.", "Tu es mon chaos préféré.", "Regarde-moi. Personne d'autre n'existe.", "Ton cœur bat pour moi, ou il ne bat plus.", "Je t'ai choisie avant même de te connaître.", "Ta soumission est mon trône.", "Je t'ai gravée dans ma peau."];
+        
         let calMode = 'star';
         let stepCount = parseInt(localStorage.getItem('alicia_steps') || "0");
         let data = JSON.parse(localStorage.getItem('alicia_data') || '{"stars":[], "periods":[], "notes":{}, "booksCount":0, "bookList":[]}');
@@ -182,15 +143,86 @@
 
         window.onload = () => {
             updateTime(); setInterval(updateTime, 1000);
-            updateBookDisplay(); renderCalendar(); updateGymDisplay();
-            setDailyQuote();
-            setupReset('book-card', resetBooks);
-            setupReset('steps-val', resetSteps);
+            updateBookDisplay(); renderCalendar(); updateGymDisplay(); setDailyQuote();
+            setupReset('book-card', () => { if(confirm("Réinitialiser les lectures ?")) { data.booksCount=0; data.bookList=[]; saveData(); updateBookDisplay(); } });
+            setupReset('steps-val', () => { if(confirm("Réinitialiser les pas ?")) { stepCount=0; updateGymDisplay(); } });
         };
 
         function setDailyQuote() {
             const day = new Date().getDate();
             document.getElementById('daily-quote').innerText = `"${quotes[day % quotes.length]}"`;
+        }
+
+        function handleDayClick(i) {
+            if(calMode === 'note') {
+                openNoteEditor(i);
+            } else if(calMode === 'star') {
+                if(data.stars.includes(i)) data.stars = data.stars.filter(x => x !== i);
+                else data.stars.push(i);
+                saveData(); renderCalendar();
+            } else {
+                if(data.periods.includes(i)) data.periods = data.periods.filter(x => x !== i);
+                else data.periods.push(i);
+                saveData(); renderCalendar();
+            }
+        }
+
+        function openNoteEditor(day) {
+            const currentNote = data.notes[day] || "";
+            document.getElementById('modal-inner').innerHTML = `
+                <span class="label">Journal du ${day}</span>
+                <textarea id="note-text" rows="6" placeholder="Raconte ta journée ou ton humeur...">${currentNote}</textarea>
+                <button onclick="saveNote(${day})" class="btn-main">Enregistrer</button>
+                <p onclick="closeModal()" style="text-align:center; margin-top:15px; font-size:10px; opacity:0.5">FERMER</p>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function saveNote(day) {
+            const val = document.getElementById('note-text').value;
+            if(val) data.notes[day] = val; else delete data.notes[day];
+            saveData(); renderCalendar(); closeModal();
+        }
+
+        function renderCalendar() {
+            const cal = document.getElementById('calendar'); cal.innerHTML = '';
+            for(let i=1; i<=31; i++) {
+                let d = document.createElement('div'); d.className = 'day';
+                if(data.stars.includes(i)) d.classList.add('starred');
+                if(data.periods.includes(i)) d.classList.add('period');
+                if(data.notes[i]) d.classList.add('has-note');
+                d.innerText = i; d.onclick = () => handleDayClick(i);
+                cal.appendChild(d);
+            }
+        }
+
+        function unlock() {
+            if(document.getElementById('pass').value === '19/10') {
+                vibrate([50, 30, 50]);
+                document.getElementById('lock').style.display = 'none';
+                document.getElementById('vault-content').style.display = 'block';
+                renderPhotos();
+            } else {
+                vibrate(200); document.getElementById('lock').style.animation = "shake 0.4s";
+                setTimeout(() => document.getElementById('lock').style.animation = "", 400);
+            }
+        }
+
+        function renderPhotos() {
+            document.getElementById('gallery-grid').innerHTML = photos.map((p, i) => `
+                <div style="background:#111; border-radius:15px; overflow:hidden;" onclick="if(confirm('Supprimer cette photo ?')){photos.splice(${i},1); localStorage.setItem('alicia_photos', JSON.stringify(photos)); renderPhotos();}">
+                    <img src="${p.src}" style="width:100%; aspect-ratio:1; object-fit:cover;">
+                    <p style="font-size:10px; padding:5px; text-align:center; opacity:0.6;">${p.cap}</p>
+                </div>
+            `).join('');
+        }
+
+        function addPhoto(e) {
+            const file = e.target.files[0]; if(!file) return;
+            const cap = prompt("Légende de la photo ?") || "";
+            const reader = new FileReader();
+            reader.onload = (ev) => { photos.push({src: ev.target.result, cap: cap}); localStorage.setItem('alicia_photos', JSON.stringify(photos)); renderPhotos(); };
+            reader.readAsDataURL(file);
         }
 
         function updateTime() {
@@ -201,103 +233,36 @@
             document.getElementById('clock').innerText = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
         }
 
-        function unlock() {
-            if(document.getElementById('pass').value === '19/10') {
-                vibrate([50, 30, 50]);
-                document.getElementById('lock').style.display = 'none';
-                document.getElementById('vault-content').style.display = 'block';
-                renderPhotos();
-            } else {
-                vibrate(200); document.getElementById('pass').value = "";
-                document.getElementById('lock').style.animation = "shake 0.4s";
-                setTimeout(() => { document.getElementById('lock').style.animation = ""; }, 400);
-            }
-        }
-
-        function addPhoto(event) {
-            const file = event.target.files[0]; if(!file) return;
-            const caption = prompt("Une légende pour ce souvenir ?") || "";
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                photos.push({src: e.target.result, cap: caption});
-                localStorage.setItem('alicia_photos', JSON.stringify(photos));
-                renderPhotos();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function renderPhotos() {
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = photos.map((p, i) => `
-                <div class="photo-card" onclick="if(confirm('Supprimer ce souvenir ?')){photos.splice(${i},1); localStorage.setItem('alicia_photos', JSON.stringify(photos)); renderPhotos();}">
-                    <img src="${p.src}">
-                    <div class="photo-caption">${p.cap}</div>
-                </div>
-            `).join('');
-        }
-
-        function setupReset(id, callback) {
-            let timer; const el = document.getElementById(id);
-            el.addEventListener('touchstart', () => { timer = setTimeout(callback, 2000); });
-            el.addEventListener('touchend', () => { clearTimeout(timer); });
-        }
-        function resetSteps() { if(confirm("Réinitialiser tes efforts ?")) { stepCount = 0; updateGymDisplay(); vibrate(50); } }
-        function resetBooks() { if(confirm("Vider ta bibliothèque ?")) { data.booksCount = 0; data.bookList = []; updateBookDisplay(); saveData(); vibrate(50); } }
-
         function openBookManager() {
-            let listHtml = data.bookList.map((b, i) => `<div style="display:flex; justify-content:space-between; padding:8px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; font-size:12px;"><span>${b}</span><span onclick="data.bookList.splice(${i},1); openBookManager(); saveData();">✕</span></div>`).join('');
+            let list = data.bookList.map((b, i) => `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${b}</span><span onclick="data.bookList.splice(${i},1); openBookManager(); saveData();">✕</span></div>`).join('');
             document.getElementById('modal-inner').innerHTML = `
-                <span class="label">Lectures Noires</span>
-                <input type="number" id="nb-books" value="${data.booksCount}">
-                <div style="max-height: 120px; overflow-y: auto;">${listHtml}</div>
-                <input type="text" id="new-book" placeholder="Titre du livre...">
-                <button onclick="const n=document.getElementById('new-book').value; if(n)data.bookList.push(n); data.booksCount=document.getElementById('nb-books').value; saveData(); updateBookDisplay(); openBookManager();" class="btn-main">Enregistrer</button>
-                <p onclick="document.getElementById('modal').style.display='none'" style="text-align:center; margin-top:15px; font-size:10px; opacity:0.5">FERMER</p>
+                <span class="label">Bibliothèque</span>
+                <input type="number" id="nb-b" value="${data.booksCount}">
+                <div style="max-height:100px; overflow-y:auto; font-size:12px;">${list}</div>
+                <input type="text" id="new-b" placeholder="Titre du livre...">
+                <button onclick="if(document.getElementById('new-b').value) data.bookList.push(document.getElementById('new-b').value); data.booksCount=document.getElementById('nb-b').value; saveData(); updateBookDisplay(); openBookManager();" class="btn-main">Enregistrer</button>
+                <p onclick="closeModal()" style="text-align:center; margin-top:10px; font-size:10px; opacity:0.5">FERMER</p>
             `;
             document.getElementById('modal').style.display = 'flex';
         }
 
+        function setupReset(id, cb) {
+            let t; const el = document.getElementById(id);
+            el.addEventListener('touchstart', () => t = setTimeout(cb, 2000));
+            el.addEventListener('touchend', () => clearTimeout(t));
+        }
         function go(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active'); el.classList.add('active');
         }
-
-        function renderCalendar() {
-            const cal = document.getElementById('calendar'); cal.innerHTML = '';
-            for(let i=1; i<=31; i++) {
-                let d = document.createElement('div'); d.className = 'day';
-                if(data.stars.includes(i)) d.classList.add('starred');
-                if(data.periods.includes(i)) d.classList.add('period');
-                d.innerText = i; d.onclick = () => {
-                    if(calMode==='star'){ if(data.stars.includes(i)) data.stars=data.stars.filter(x=>x!==i); else data.stars.push(i); }
-                    else if(calMode==='period'){ if(data.periods.includes(i)) data.periods=data.periods.filter(x=>x!==i); else data.periods.push(i); }
-                    saveData(); renderCalendar();
-                };
-                cal.appendChild(d);
-            }
-        }
-
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
         function updateBookDisplay() { document.getElementById('book-count-text').innerText = data.booksCount + " LIVRES"; }
         function saveData() { localStorage.setItem('alicia_data', JSON.stringify(data)); }
         function vibrate(ms) { if(navigator.vibrate) navigator.vibrate(ms); }
-        function initGym() {
-            document.getElementById('gym-btn').innerText = "TRACKING... ✅";
-            window.addEventListener('devicemotion', (e) => {
-                let t = Math.sqrt(e.accelerationIncludingGravity.x**2 + e.accelerationIncludingGravity.y**2 + e.accelerationIncludingGravity.z**2);
-                if (t > 15) { stepCount++; updateGymDisplay(); }
-            });
-        }
-        function updateGymDisplay() {
-            document.getElementById('steps-val').innerText = stepCount;
-            document.getElementById('km').innerText = (stepCount * 0.0007).toFixed(2);
-            document.getElementById('kcal').innerText = Math.floor(stepCount * 0.04);
-            localStorage.setItem('alicia_steps', stepCount);
-        }
-        function setCalMode(m) {
-            calMode = m; document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + m).classList.add('active');
-        }
+        function setCalMode(m) { calMode = m; document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); document.getElementById('btn-'+m).classList.add('active'); }
+        function initGym() { document.getElementById('gym-btn').innerText = "TRACKING... ✅"; window.addEventListener('devicemotion', (e) => { if (Math.sqrt(e.accelerationIncludingGravity.x**2 + e.accelerationIncludingGravity.y**2 + e.accelerationIncludingGravity.z**2) > 15) { stepCount++; updateGymDisplay(); } }); }
+        function updateGymDisplay() { document.getElementById('steps-val').innerText = stepCount; document.getElementById('km').innerText = (stepCount * 0.0007).toFixed(2); document.getElementById('kcal').innerText = Math.floor(stepCount * 0.04); localStorage.setItem('alicia_steps', stepCount); }
     </script>
 </body>
 </html>
