@@ -8,9 +8,7 @@
     <style>
         :root { --p: #ff75c3; --glass: rgba(255, 255, 255, 0.04); --red: #ff0040; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; transition: background 0.3s; }
-        
-        /* EFFET FLASH ROUGE (EASTER EGG) */
+        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; transition: background 0.5s ease; }
         body.obsession { background: radial-gradient(circle, #400010 0%, #000 100%); }
 
         .main { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 120px; }
@@ -19,7 +17,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* HEADER */
-        header h1 { font-family: 'Playfair Display', serif; font-size: 50px; font-style: italic; line-height: 0.9; background: linear-gradient(180deg, #fff 30%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; transition: 0.3s; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 50px; font-style: italic; line-height: 0.9; background: linear-gradient(180deg, #fff 30%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
         .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
 
         /* CARDS */
@@ -30,6 +28,7 @@
         /* GYM */
         .gym-grid { display: flex; justify-content: space-between; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
         .stat-item span { display: block; font-size: 18px; font-weight: 800; }
+        .stat-item small { font-size: 8px; opacity: 0.3; }
 
         /* CALENDRIER */
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
@@ -37,15 +36,15 @@
         .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; bottom: 2px; }
         .day.period { background: rgba(255, 117, 195, 0.25); border-color: var(--p); }
 
-        /* VAULT GLITCH */
-        .glitch { animation: shake 0.2s linear infinite; border-color: var(--red) !important; }
-        @keyframes shake { 0% { transform: translate(0); } 25% { transform: translate(5px); } 50% { transform: translate(-5px); } 100% { transform: translate(0); } }
-
+        /* VAULT */
         #gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .memory-img { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; }
+        .memory-img { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
+        .glitch { animation: shake 0.2s linear 3; border-color: var(--red) !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
 
+        /* NAV */
         .nav { position: fixed; bottom: 30px; left: 5%; width: 90%; height: 85px; background: rgba(10, 10, 10, 0.85); border-radius: 45px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.08); }
-        .nav-item { font-size: 26px; opacity: 0.2; cursor: pointer; }
+        .nav-item { font-size: 26px; opacity: 0.2; cursor: pointer; transition: 0.3s; }
         .nav-item.active { opacity: 1; transform: scale(1.2); }
     </style>
 </head>
@@ -66,14 +65,14 @@
                 </div>
             </div>
             <div class="card" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()">
-                <span class="label">Daily Oracle (Long press for secret)</span>
+                <span class="label">Daily Oracle</span>
                 <p id="daily-oracle" style="font-family: 'Playfair Display'; font-style: italic; font-size: 22px; line-height: 1.4;">"Chargement..."</p>
             </div>
         </div>
 
         <div id="gym" class="section">
             <div class="card">
-                <span class="label">Gym Tracker</span>
+                <span class="label">Performance</span>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span class="big-val" id="steps">0</span>
                     <span style="font-size: 40px; cursor: pointer;" onclick="cheatSteps()">🦾</span>
@@ -82,16 +81,16 @@
                     <div class="stat-item"><span id="km">0.00</span><small>KM</small></div>
                     <div class="stat-item"><span id="kcal">0</span><small>KCAL</small></div>
                 </div>
-                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border:1px solid var(--p); color:var(--p); padding:10px; border-radius:15px; margin-top:20px; font-size:9px; font-weight:800;">ACTIVER CAPTEURS</button>
+                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border:1px solid var(--p); color:var(--p); padding:15px; border-radius:20px; margin-top:20px; font-weight:800; font-size:10px;">DÉMARRER LA SESSION</button>
             </div>
         </div>
 
         <div id="cycle" class="section">
             <div class="card">
-                <span class="label">Journal</span>
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <button class="btn-mode active" id="mode-star" onclick="setMode('star')" style="flex:1; padding:10px; border-radius:10px; background:none; border:1px solid var(--p); color:#fff; font-size:9px;">⭐ SEX</button>
-                    <button class="btn-mode" id="mode-period" onclick="setMode('period')" style="flex:1; padding:10px; border-radius:10px; background:none; border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:9px;">🩸 CYCLE</button>
+                <span class="label">Journal d'Intimité</span>
+                <div style="display:flex; gap:10px; margin-bottom:20px;">
+                    <button id="mode-star" onclick="setMode('star')" style="flex:1; padding:12px; border-radius:15px; background:none; border:1px solid var(--p); color:#fff; font-size:10px;">⭐ SEX</button>
+                    <button id="mode-period" onclick="setMode('period')" style="flex:1; padding:12px; border-radius:15px; background:none; border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:10px;">🩸 CYCLE</button>
                 </div>
                 <div class="cal-grid" id="calendar"></div>
             </div>
@@ -99,9 +98,9 @@
 
         <div id="vault" class="section">
             <div id="lock" class="card" style="text-align: center;">
-                <span class="label">Private Vault</span>
+                <span class="label">Vault</span>
                 <input type="password" id="pass" placeholder="CODE 18/10" style="background:none; border:1px solid var(--p); color:#fff; padding:15px; border-radius:15px; width:100%; text-align:center; font-size:20px; margin:20px 0; outline:none;">
-                <button onclick="unlock()" style="background:var(--p); border:none; padding:15px; border-radius:15px; width:100%; font-weight:800;">ENTRER</button>
+                <button onclick="unlock()" style="background:var(--p); border:none; padding:15px; border-radius:15px; width:100%; font-weight:800; color:#000;">ENTRER</button>
             </div>
             <div id="vault-content" style="display:none;">
                 <div class="card">
@@ -123,42 +122,22 @@
 
     <script>
         let currentMode = 'star';
-        let stepCount = 0;
+        // RÉCUPÉRATION DE LA MÉMOIRE DES PAS
+        let stepCount = parseInt(localStorage.getItem('alicia_total_steps') || "0");
         let titleClicks = 0;
         let pressTimer;
 
-        // --- EASTER EGG 1: MODE OBSESSION ---
-        function triggerObsession() {
-            titleClicks++;
-            if(titleClicks === 3) {
-                document.body.classList.toggle('obsession');
-                document.getElementById('status-text').innerText = "PROPRIÉTÉ PRIVÉE. NE PAS TOUCHER.";
-                setTimeout(() => { titleClicks = 0; }, 2000);
-            }
-        }
+        const phrases = ["Il brûlerait le monde pour son sourire.", "Dans son enfer, elle est sa seule prière.", "Son chaos est son équilibre.", "Possédée par son amour.", "Elle est sa plus belle addiction."];
 
-        // --- EASTER EGG 2: SECRET ORACLE ---
-        function startLongPress() { pressTimer = setTimeout(() => { document.getElementById('daily-oracle').innerText = "\"Tu es ma plus belle addiction, Alicia.\""; }, 2000); }
-        function endLongPress() { clearTimeout(pressTimer); }
-
-        // --- EASTER EGG 3: CHEAT GYM ---
-        let cheatCount = 0;
-        function cheatSteps() {
-            cheatCount++;
-            if(cheatCount >= 5) {
-                stepCount += 2000;
-                updateGym();
-                alert("Mode Triche : +1000 pas ajoutés 😈");
-                cheatCount = 0;
-            }
-        }
-
-        // --- LOGIQUE DE BASE ---
-        const phrases = ["Il brûlerait le monde pour son sourire.", "Elle est sa seule prière.", "Son chaos est son équilibre.", "Possédée par son amour."];
         window.onload = () => {
             const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
             document.getElementById('daily-oracle').innerText = `"${phrases[day % phrases.length]}"`;
+            
+            // Affichage initial des pas sauvegardés
+            updateGymDisplay();
+            
             (JSON.parse(localStorage.getItem('alicia_memories') || "[]")).forEach(src => displayImg(src));
+            renderCalendar();
         };
 
         function go(id, el) {
@@ -168,17 +147,73 @@
             el.classList.add('active');
         }
 
-        function unlock() {
-            const card = document.getElementById('lock');
-            if(document.getElementById('pass').value === '18/10') {
-                card.style.display = 'none';
-                document.getElementById('vault-content').style.display = 'block';
-            } else {
-                card.classList.add('glitch');
-                setTimeout(() => card.classList.remove('glitch'), 500);
+        // --- EASTER EGGS ---
+        function triggerObsession() {
+            titleClicks++;
+            if(titleClicks >= 3) {
+                document.body.classList.toggle('obsession');
+                document.getElementById('status-text').innerText = document.body.classList.contains('obsession') ? "PROPRIÉTÉ PRIVÉE. ACCÈS RESTREINT." : "Possession: Active.";
+                titleClicks = 0;
+            }
+        }
+        function startLongPress() { pressTimer = setTimeout(() => { document.getElementById('daily-oracle').innerText = "\"Tu m'appartiens pour l'éternité.\""; }, 2000); }
+        function endLongPress() { clearTimeout(pressTimer); }
+        function cheatSteps() { stepCount += 2000; updateGymDisplay(); }
+
+        // --- GYM TRACKER (SAUVEGARDE AUTOMATIQUE) ---
+        function initGym() {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission().then(state => { if(state === 'granted') startGym(); });
+            } else { startGym(); }
+        }
+
+        function startGym() {
+            document.getElementById('gym-btn').innerText = "TRACKING LIVE ✅";
+            window.addEventListener('devicemotion', (e) => {
+                let acc = e.accelerationIncludingGravity;
+                let total = Math.sqrt(acc.x**2 + acc.y**2 + acc.z**2);
+                if(total > 11) { 
+                    stepCount++; 
+                    updateGymDisplay(); 
+                }
+            });
+        }
+
+        function updateGymDisplay() {
+            let r = Math.floor(stepCount / 2);
+            document.getElementById('steps').innerText = r;
+            document.getElementById('km').innerText = (r * 0.0007).toFixed(2);
+            document.getElementById('kcal').innerText = Math.floor(r * 0.04);
+            // ON GRAVE DANS LA MÉMOIRE
+            localStorage.setItem('alicia_total_steps', stepCount);
+        }
+
+        // --- CALENDRIER ---
+        function setMode(m) {
+            currentMode = m;
+            document.getElementById('mode-star').style.borderColor = (m==='star') ? 'var(--p)' : 'rgba(255,255,255,0.1)';
+            document.getElementById('mode-period').style.borderColor = (m==='period') ? 'var(--p)' : 'rgba(255,255,255,0.1)';
+        }
+        function renderCalendar() {
+            const cal = document.getElementById('calendar');
+            for(let i=1; i<=31; i++) {
+                let d = document.createElement('div'); d.className = 'day'; d.innerText = i;
+                d.onclick = () => { if(currentMode === 'star') d.classList.toggle('starred'); else d.classList.toggle('period'); };
+                cal.appendChild(d);
             }
         }
 
+        // --- VAULT ---
+        function unlock() {
+            const lock = document.getElementById('lock');
+            if(document.getElementById('pass').value === '18/10') {
+                lock.style.display = 'none';
+                document.getElementById('vault-content').style.display = 'block';
+            } else {
+                lock.classList.add('glitch');
+                setTimeout(() => lock.classList.remove('glitch'), 600);
+            }
+        }
         function addMemory(event) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -188,39 +223,16 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         }
-
         function displayImg(src) {
             const img = document.createElement('img'); img.src = src; img.className = 'memory-img';
             document.getElementById('gallery-grid').appendChild(img);
         }
 
-        function initGym() { if (typeof DeviceMotionEvent.requestPermission === 'function') DeviceMotionEvent.requestPermission().then(r => { if(r=='granted') startGym(); }); else startGym(); }
-        function startGym() {
-            window.addEventListener('devicemotion', (e) => {
-                if(Math.abs(e.accelerationIncludingGravity.x) > 15) { stepCount++; updateGym(); }
-            });
-            document.getElementById('gym-btn').innerText = "TRACKING LIVE ✅";
-        }
-        function updateGym() {
-            let r = Math.floor(stepCount/2);
-            document.getElementById('steps').innerText = r;
-            document.getElementById('km').innerText = (r*0.0007).toFixed(2);
-            document.getElementById('kcal').innerText = Math.floor(r*0.04);
-        }
-
-        function setMode(m) { 
-            currentMode = m; 
-            document.querySelectorAll('.btn-mode').forEach(b => b.style.borderColor = 'rgba(255,255,255,0.1)');
-            document.getElementById('mode-'+m).style.borderColor = 'var(--p)';
-        }
-        const cal = document.getElementById('calendar');
-        for(let i=1; i<=31; i++) {
-            let d = document.createElement('div'); d.className = 'day'; d.innerText = i;
-            d.onclick = () => { if(currentMode === 'star') d.classList.toggle('starred'); else d.classList.toggle('period'); };
-            cal.appendChild(d);
-        }
-
-        setInterval(() => { document.getElementById('days').innerText = Math.floor((new Date() - new Date(2025, 9, 18)) / 86400000); }, 1000);
+        // TIME TRACKER
+        setInterval(() => { 
+            const start = new Date(2025, 9, 18);
+            document.getElementById('days').innerText = Math.floor((new Date() - start) / 86400000); 
+        }, 1000);
     </script>
 </body>
 </html>
