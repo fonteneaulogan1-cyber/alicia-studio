@@ -6,48 +6,75 @@
     <title>ALICIA • MILLION EDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;800&family=Playfair+Display:italic,wght@900&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #ff75c3; --glass: rgba(255, 255, 255, 0.04); --red: #ff0040; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; transition: background 0.5s ease; }
-        body.obsession { background: radial-gradient(circle, #400010 0%, #000 100%); }
+        :root { --p: #ff75c3; --glass: rgba(255, 255, 255, 0.04); --red: #ff0040; --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; padding-top: var(--safe-top); transition: background 0.8s; }
+        body.obsession { background: radial-gradient(circle at center, #400010 0%, #000 100%); }
 
-        .main { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 120px; }
-        .section { display: none; animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* STATUS BAR (NOUVEAU) */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; font-size: 11px; font-weight: 800; opacity: 0.8; letter-spacing: 1px; }
+        #clock { font-size: 14px; font-weight: 300; }
+        .vibe-tag { color: var(--p); font-size: 9px; text-transform: uppercase; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        header h1 { font-family: 'Playfair Display', serif; font-size: 50px; font-style: italic; line-height: 0.9; background: linear-gradient(180deg, #fff 30%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
-        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
+        .main { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: calc(140px + var(--safe-bottom)); }
+        
+        header { margin: 10px 0 30px 0; }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-style: italic; line-height: 0.9; color: #fff; }
+        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
 
-        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 40px; padding: 35px; margin-bottom: 20px; backdrop-filter: blur(40px); }
-        .label { font-size: 9px; font-weight: 800; letter-spacing: 3px; opacity: 0.3; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        .big-val { font-size: 80px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
+        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 35px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(30px); }
+        .label { font-size: 9px; font-weight: 800; letter-spacing: 2px; opacity: 0.5; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .big-val { font-size: 75px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
 
-        .gym-grid { display: flex; justify-content: space-between; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
-        .stat-item span { display: block; font-size: 18px; font-weight: 800; }
-        .stat-item small { font-size: 8px; opacity: 0.3; }
+        /* JOURNAL MODES */
+        .mode-selector { display: flex; gap: 8px; margin-bottom: 20px; }
+        .mode-btn { flex: 1; padding: 12px; border-radius: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .mode-btn.active { border-color: var(--p); background: rgba(255, 117, 195, 0.1); }
 
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .day { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
-        .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; bottom: 2px; }
-        .day.period { background: rgba(255, 117, 195, 0.25); border-color: var(--p); }
+        /* CALENDRIER */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .day { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; top: 4px; right: 4px; }
+        .day.period { border-color: var(--p); background: rgba(255, 117, 195, 0.15); }
+        .day.has-note::before { content: ''; width: 3px; height: 3px; background: #fff; border-radius: 50%; position: absolute; bottom: 4px; }
 
-        #gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .memory-img { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
-        .glitch { animation: shake 0.2s linear 3; border-color: var(--red) !important; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
+        /* NAV DOCK */
+        .nav { position: fixed; bottom: calc(25px + var(--safe-bottom)); left: 5%; width: 90%; height: 80px; background: rgba(15, 15, 15, 0.95); border-radius: 40px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
+        .nav-item { font-size: 24px; opacity: 0.3; transition: 0.3s; }
+        .nav-item.active { opacity: 1; transform: translateY(-5px); color: var(--p); }
 
-        .nav { position: fixed; bottom: 30px; left: 5%; width: 90%; height: 85px; background: rgba(10, 10, 10, 0.85); border-radius: 45px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.08); }
-        .nav-item { font-size: 26px; opacity: 0.2; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { opacity: 1; transform: scale(1.2); }
+        /* SECRET OVERLAY */
+        #secret-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index: 4000; flex-direction:column; align-items:center; justify-content:center; text-align: center; }
+        
+        #note-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #0a0a0a; border: 1px solid var(--p); border-radius: 35px; padding: 30px; width: 100%; max-width: 350px; }
+        textarea { width: 100%; height: 120px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #fff; padding: 15px; margin: 15px 0; outline: none; }
+
+        .memory-img { width: 100%; height: 150px; border-radius: 20px; object-fit: cover; }
+        .section { display: none; }
+        .section.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+    <div class="top-bar">
+        <div id="clock">00:00</div>
+        <div class="vibe-tag" id="vibe-text">ETERNAL CONNECTION</div>
+        <div style="display: flex; align-items: center; gap: 4px;">100% <span style="color:var(--p)">❤️</span></div>
+    </div>
+
+    <div id="secret-overlay" onclick="this.style.display='none'">
+        <h2 style="font-family: 'Playfair Display'; font-style: italic; font-size: 40px;">Tu m'appartiens.</h2>
+        <p style="color:var(--p); margin-top: 20px; letter-spacing: 2px; font-size: 10px;">PROPRIÉTÉ PRIVÉE</p>
+    </div>
+
     <div class="main">
         <header>
-            <h1 id="main-title" onclick="triggerObsession()">Alicia.</h1>
-            <p class="status-line" id="status-text">Possession: Active.</p>
+            <h1 onclick="triggerObsession()">Alicia.</h1>
+            <p class="status-line">OWNER: MILLION EDITION</p>
         </header>
 
         <div id="home" class="section active">
@@ -55,12 +82,12 @@
                 <span class="label">Shared Eternity</span>
                 <div style="display: flex; align-items: baseline;">
                     <span class="big-val" id="days">0</span>
-                    <span style="font-size: 14px; opacity: 0.2; font-weight: 800; margin-left: 10px;">JOURS</span>
+                    <span style="font-size: 14px; opacity: 0.4; font-weight: 800; margin-left: 10px;">JOURS</span>
                 </div>
             </div>
-            <div class="card" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()">
-                <span class="label">Daily Oracle</span>
-                <p id="daily-oracle" style="font-family: 'Playfair Display'; font-style: italic; font-size: 22px; line-height: 1.4;">"Chargement..."</p>
+            <div class="card">
+                <span class="label">L'Oracle du Matin</span>
+                <p id="daily-oracle" style="font-family: 'Playfair Display'; font-style: italic; font-size: 22px; line-height: 1.4;">"..."</p>
             </div>
         </div>
 
@@ -69,22 +96,23 @@
                 <span class="label">Performance Tracker</span>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span class="big-val" id="steps">0</span>
-                    <span style="font-size: 40px; cursor: pointer;" onclick="cheatSteps()">🦾</span>
+                    <span style="font-size: 35px;" onclick="vibrate(50); cheatSteps();">🦾</span>
                 </div>
-                <div class="gym-grid">
-                    <div class="stat-item"><span id="km">0.00</span><small>KM</small></div>
-                    <div class="stat-item"><span id="kcal">0</span><small>KCAL</small></div>
+                <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <div><span id="km" style="display:block; font-size:20px; font-weight:800;">0.00</span><small style="font-size:9px; opacity:0.4;">KM</small></div>
+                    <div style="text-align:right;"><span id="kcal" style="display:block; font-size:20px; font-weight:800;">0</span><small style="font-size:9px; opacity:0.4;">KCAL</small></div>
                 </div>
-                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border:1px solid var(--p); color:var(--p); padding:15px; border-radius:20px; margin-top:20px; font-weight:800; font-size:10px;">ACTIVER LES CAPTEURS</button>
+                <button onclick="vibrate(30); initGym();" id="gym-btn" style="width:100%; background:var(--p); color:#000; border:none; padding:20px; border-radius:25px; margin-top:20px; font-weight:800; font-size:11px; letter-spacing:1px;">LANCER LE TRACKING</button>
             </div>
         </div>
 
         <div id="cycle" class="section">
             <div class="card">
-                <span class="label">Journal d'Intimité</span>
-                <div style="display:flex; gap:10px; margin-bottom:20px;">
-                    <button id="mode-star" onclick="setMode('star')" style="flex:1; padding:12px; border-radius:15px; background:none; border:1px solid var(--p); color:#fff; font-size:10px;">⭐ SEX</button>
-                    <button id="mode-period" onclick="setMode('period')" style="flex:1; padding:12px; border-radius:15px; background:none; border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:10px;">🩸 CYCLE</button>
+                <span class="label">Life & Intimacy Journal</span>
+                <div class="mode-selector">
+                    <button id="btn-star" class="mode-btn active" onclick="setCalMode('star')">⭐ SEX</button>
+                    <button id="btn-period" class="mode-btn" onclick="setCalMode('period')">🩸 CYCLE</button>
+                    <button id="btn-note" class="mode-btn" onclick="setCalMode('note')">📝 JOURNAL</button>
                 </div>
                 <div class="cal-grid" id="calendar"></div>
             </div>
@@ -92,44 +120,69 @@
 
         <div id="vault" class="section">
             <div id="lock" class="card" style="text-align: center;">
-                <span class="label">Private Vault</span>
-                <input type="password" id="pass" placeholder="CODE 18/10" style="background:none; border:1px solid var(--p); color:#fff; padding:15px; border-radius:15px; width:100%; text-align:center; font-size:20px; margin:20px 0; outline:none;">
-                <button onclick="unlock()" style="background:var(--p); border:none; padding:15px; border-radius:15px; width:100%; font-weight:800;">DÉVERROUILLER</button>
+                <span class="label">Galerie Privée</span>
+                <input type="password" id="pass" placeholder="CODE 18/10" style="background:none; border:1px solid var(--p); color:#fff; padding:18px; border-radius:20px; width:100%; text-align:center; margin:20px 0; font-size:18px; outline:none;">
+                <button onclick="vibrate(40); unlock()" style="background:var(--p); border:none; padding:18px; border-radius:20px; width:100%; font-weight:800; color:#000;">DÉVERROUILLER</button>
             </div>
             <div id="vault-content" style="display:none;">
                 <div class="card">
-                    <span class="label">Galerie</span>
+                    <span class="label">Galerie Privée</span>
                     <div id="gallery-grid"></div>
+                    <p id="empty-msg" style="text-align:center; opacity:0.4; font-size:12px; font-style:italic; margin: 40px 0;">"Espace prêt pour vos souvenirs."</p>
                     <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="addMemory(event)">
-                    <button onclick="document.getElementById('file-input').click()" style="width:100%; padding:15px; border-radius:15px; border:1px solid var(--p); background:none; color:var(--p); font-weight:800; margin-top:20px;">+ AJOUTER UNE PHOTO</button>
+                    <button onclick="document.getElementById('file-input').click()" style="width:100%; padding:18px; border-radius:25px; border:1px solid var(--p); background:none; color:var(--p); font-weight:800; margin-top:20px;">+ AJOUTER PHOTO</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <div id="note-modal">
+        <div class="modal-content">
+            <span class="label" id="modal-date-label">Note</span>
+            <textarea id="note-text" placeholder="Écris ici ton moment..."></textarea>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="closeModal()" style="flex:1; background:none; border:1px solid #333; color:#666; padding:18px; border-radius:20px;">ANNULER</button>
+                <button onclick="vibrate(30); saveNote()" style="flex:1; background:var(--p); border:none; color:#000; padding:18px; border-radius:20px; font-weight:800;">SAUVER</button>
+            </div>
+        </div>
+    </div>
+
     <nav class="nav">
-        <div class="nav-item active" onclick="go('home', this)">🏠</div>
-        <div class="nav-item" onclick="go('gym', this)">🦾</div>
-        <div class="nav-item" onclick="go('cycle', this)">📖</div>
-        <div class="nav-item" onclick="go('vault', this)">🔒</div>
+        <div class="nav-item active" onclick="go('home', this); vibrate(10);">🏠</div>
+        <div class="nav-item" onclick="go('gym', this); vibrate(10);">🦾</div>
+        <div class="nav-item" onclick="go('cycle', this); vibrate(10);">📖</div>
+        <div class="nav-item" onclick="go('vault', this); vibrate(10);">🔒</div>
     </nav>
 
     <script>
-        let currentMode = 'star';
+        let calMode = 'star';
         let stepCount = parseInt(localStorage.getItem('alicia_total_steps') || "0");
         let lastStepTime = 0;
-        let titleClicks = 0;
-        let pressTimer;
-
-        const phrases = ["Il brûlerait le monde pour son sourire.", "Dans son enfer, elle est sa seule prière.", "Son chaos est son équilibre.", "Possédée par son amour.", "Elle est sa plus belle addiction."];
+        let selectedDay = null;
+        let data = JSON.parse(localStorage.getItem('alicia_cal_data') || '{"stars":[], "periods":[], "notes":{}}');
 
         window.onload = () => {
-            const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-            document.getElementById('daily-oracle').innerText = `"${phrases[day % phrases.length]}"`;
+            document.getElementById('days').innerText = Math.floor((new Date() - new Date(2025, 9, 18)) / 86400000);
             updateGymDisplay();
-            (JSON.parse(localStorage.getItem('alicia_memories') || "[]")).forEach(src => displayImg(src));
             renderCalendar();
+            initShake();
+            updateClock();
+            setInterval(updateClock, 1000);
+            let mems = JSON.parse(localStorage.getItem('alicia_memories') || "[]");
+            if(mems.length > 0) document.getElementById('empty-msg').style.display = 'none';
+            mems.forEach(src => displayImg(src));
+            const phrases = ["Il brûlerait le monde pour son sourire.", "Son nom est le seul mot qu'il murmure.", "Son chaos est son équilibre.", "Possédée par son amour."];
+            document.getElementById('daily-oracle').innerText = `"${phrases[Math.floor(Math.random()*phrases.length)]}"`;
         };
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
+            const vibes = ["ETERNAL CONNECTION", "STILL YOURS", "OBSESSED", "CONNECTED", "MY ONLY ONE"];
+            document.getElementById('vibe-text').innerText = vibes[Math.floor(now.getMinutes() / 12)];
+        }
+
+        function vibrate(ms) { if(navigator.vibrate) navigator.vibrate(ms); }
 
         function go(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -138,29 +191,77 @@
             el.classList.add('active');
         }
 
-        // --- TRACKER RÉALISTE AVEC FILTRE ---
-        function initGym() {
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission().then(state => { if(state === 'granted') startGym(); });
-            } else { startGym(); }
-        }
-
-        function startGym() {
-            document.getElementById('gym-btn').innerText = "TRACKING LIVE ✅";
+        function initShake() {
+            let lastShake = 0;
             window.addEventListener('devicemotion', (e) => {
-                let acc = e.accelerationIncludingGravity;
-                let total = Math.sqrt(acc.x**2 + acc.y**2 + acc.z**2);
-                let now = Date.now();
-
-                // Filtre : Intensité > 18 et min 350ms entre deux pas
-                if (total > 18 && (now - lastStepTime > 350)) { 
-                    stepCount++; 
-                    lastStepTime = now;
-                    updateGymDisplay(); 
+                let acc = e.acceleration;
+                if(!acc || !acc.x) return;
+                let speed = Math.abs(acc.x + acc.y + acc.z);
+                if(speed > 45 && (Date.now() - lastShake > 2000)) {
+                    vibrate([100, 50, 100]);
+                    document.getElementById('secret-overlay').style.display = 'flex';
+                    lastShake = Date.now();
                 }
             });
         }
 
+        function setCalMode(m) {
+            calMode = m;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + m).classList.add('active');
+        }
+
+        function renderCalendar() {
+            const cal = document.getElementById('calendar'); cal.innerHTML = '';
+            for(let i=1; i<=31; i++) {
+                let d = document.createElement('div'); d.className = 'day';
+                if(data.stars.includes(i)) d.classList.add('starred');
+                if(data.periods.includes(i)) d.classList.add('period');
+                if(data.notes[i]) d.classList.add('has-note');
+                d.innerText = i; d.onclick = () => handleDayClick(i);
+                cal.appendChild(d);
+            }
+        }
+
+        function handleDayClick(day) {
+            vibrate(20);
+            if(calMode === 'star') {
+                if(data.stars.includes(day)) data.stars = data.stars.filter(x => x !== day);
+                else data.stars.push(day);
+            } else if(calMode === 'period') {
+                if(data.periods.includes(day)) data.periods = data.periods.filter(x => x !== day);
+                else data.periods.push(day);
+            } else {
+                selectedDay = day;
+                document.getElementById('modal-date-label').innerText = "JOUR " + day;
+                document.getElementById('note-text').value = data.notes[day] || "";
+                document.getElementById('note-modal').style.display = 'flex';
+                return;
+            }
+            saveData(); renderCalendar();
+        }
+
+        function saveNote() {
+            data.notes[selectedDay] = document.getElementById('note-text').value;
+            saveData(); closeModal(); renderCalendar();
+        }
+        function closeModal() { document.getElementById('note-modal').style.display = 'none'; }
+        function saveData() { localStorage.setItem('alicia_cal_data', JSON.stringify(data)); }
+
+        function initGym() {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission().then(s => { if(s==='granted') startGym(); });
+            } else { startGym(); }
+        }
+        function startGym() {
+            document.getElementById('gym-btn').innerText = "TRACKING LIVE ✅";
+            window.addEventListener('devicemotion', (e) => {
+                let total = Math.sqrt(e.accelerationIncludingGravity.x**2 + e.accelerationIncludingGravity.y**2 + e.accelerationIncludingGravity.z**2);
+                if (total > 19 && (Date.now() - lastStepTime > 350)) {
+                    stepCount++; lastStepTime = Date.now(); updateGymDisplay();
+                }
+            });
+        }
         function updateGymDisplay() {
             document.getElementById('steps').innerText = stepCount;
             document.getElementById('km').innerText = (stepCount * 0.0007).toFixed(2);
@@ -168,46 +269,21 @@
             localStorage.setItem('alicia_total_steps', stepCount);
         }
 
-        // --- EASTER EGGS ---
-        function triggerObsession() {
-            titleClicks++;
-            if(titleClicks >= 3) {
-                document.body.classList.toggle('obsession');
-                document.getElementById('status-text').innerText = document.body.classList.contains('obsession') ? "ACCÈS PRIVÉ. NE PAS TOUCHER." : "Possession: Active.";
-                titleClicks = 0;
-            }
-        }
-        function startLongPress() { pressTimer = setTimeout(() => { document.getElementById('daily-oracle').innerText = "\"Tu m'appartiens pour l'éternité.\""; }, 2000); }
-        function endLongPress() { clearTimeout(pressTimer); }
-        function cheatSteps() { stepCount += 1000; updateGymDisplay(); }
-
-        // --- CALENDRIER & VAULT ---
-        function setMode(m) {
-            currentMode = m;
-            document.getElementById('mode-star').style.borderColor = (m==='star') ? 'var(--p)' : 'rgba(255,255,255,0.1)';
-            document.getElementById('mode-period').style.borderColor = (m==='period') ? 'var(--p)' : 'rgba(255,255,255,0.1)';
-        }
-        function renderCalendar() {
-            const cal = document.getElementById('calendar');
-            for(let i=1; i<=31; i++) {
-                let d = document.createElement('div'); d.className = 'day'; d.innerText = i;
-                d.onclick = () => { if(currentMode === 'star') d.classList.toggle('starred'); else d.classList.toggle('period'); };
-                cal.appendChild(d);
-            }
-        }
         function unlock() {
             if(document.getElementById('pass').value === '18/10') {
+                vibrate([50, 50, 50]);
                 document.getElementById('lock').style.display = 'none';
                 document.getElementById('vault-content').style.display = 'block';
-            } else {
-                document.getElementById('lock').classList.add('glitch');
-                setTimeout(() => document.getElementById('lock').classList.remove('glitch'), 600);
             }
         }
+        function triggerObsession() { vibrate(30); document.body.classList.toggle('obsession'); }
+        function cheatSteps() { stepCount += 500; updateGymDisplay(); }
+        
         function addMemory(event) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 displayImg(e.target.result);
+                document.getElementById('empty-msg').style.display = 'none';
                 let m = JSON.parse(localStorage.getItem('alicia_memories') || "[]");
                 m.push(e.target.result); localStorage.setItem('alicia_memories', JSON.stringify(m));
             };
@@ -215,12 +291,8 @@
         }
         function displayImg(src) {
             const img = document.createElement('img'); img.src = src; img.className = 'memory-img';
-            document.getElementById('gallery-grid').appendChild(img);
+            document.getElementById('gallery-grid').prepend(img);
         }
-
-        setInterval(() => { 
-            document.getElementById('days').innerText = Math.floor((new Date() - new Date(2025, 9, 18)) / 86400000); 
-        }, 1000);
     </script>
 </body>
 </html>
