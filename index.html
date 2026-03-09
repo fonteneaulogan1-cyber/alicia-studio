@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Alicia Studio">
+    <link rel="apple-touch-icon" href="https://i.pinimg.com/originals/de/1c/d1/de1cd19349886a11e8605c4860268595.jpg">
+
+    <title>Alicia Studio | Elite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --primary: #ff75c3; --accent: #7000ff; --crimson: #ff2e2e; --bg: #000000; --glass: rgba(255, 255, 255, 0.06); --border: rgba(255, 255, 255, 0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            padding-top: env(safe-area-inset-top); 
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        #nebula { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 80%); z-index: 0; pointer-events: none; }
+
+        /* Barre de Nav App Style */
+        .nav-bar { 
+            position: fixed; 
+            bottom: 35px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 92%; 
+            max-width: 400px; 
+            height: 75px; 
+            background: rgba(10, 10, 10, 0.85); 
+            backdrop-filter: blur(25px); 
+            border-radius: 40px; 
+            border: 1px solid var(--border); 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: center; 
+            z-index: 1000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        .nav-item { font-size: 24px; opacity: 0.3; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; padding: 10px; }
+        .nav-item.active { opacity: 1; transform: translateY(-12px); filter: drop-shadow(0 0 10px var(--primary)); }
+
+        .main-container { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 130px; z-index: 1; }
+        .tab { display: none; width: 100%; animation: slideIn 0.5s ease-out; }
+        .tab.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass-card { background: var(--glass); border: 1px solid var(--border); border-radius: 30px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(20px); }
+        h1 { font-family: 'Playfair Display', serif; font-size: 32px; font-style: italic; margin-bottom: 5px; }
+        .tag { font-size: 10px; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin-bottom: 12px; display: block; }
+
+        /* Calendrier interactif */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 15px; }
+        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid transparent; }
+        .cal-day.active { background: var(--crimson); color: white; font-weight: 800; box-shadow: 0 0 15px var(--crimson); }
+        .cal-day.today { border-color: var(--primary); color: var(--primary); }
+
+        /* Vault Gallery */
+        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
+        .photo-item { aspect-ratio: 1; border-radius: 20px; background: #111; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        .btn-action { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 18px; width: 100%; border-radius: 18px; font-weight: 800; font-size: 11px; letter-spacing: 1px; margin-top: 10px; }
+        input { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 15px; padding: 15px; color: white; width: 100%; margin-bottom: 12px; outline: none; border: 1px solid transparent; }
+        input:focus { border-color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div id="nebula"></div>
+
+    <nav class="nav-bar">
+        <div class="nav-item active" onclick="showTab('home', this)">🏠</div>
+        <div class="nav-item" onclick="showTab('gym', this)">🦾</div>
+        <div class="nav-item" onclick="showTab('books', this)">📖</div>
+        <div class="nav-item" onclick="showTab('heart', this)">❤️</div>
+        <div class="nav-item" onclick="showTab('lock', this)">🔒</div>
+    </nav>
+
+    <div class="main-container">
+        <section id="home" class="tab active">
+            <h1 onclick="egg()">Alicia Studio.</h1>
+            <p id="greet" style="color: var(--primary); font-size: 11px; font-weight: 600;">Possession: Active.</p>
+
+            <div class="glass-card" style="text-align: center; padding: 45px 20px; margin-top: 25px;">
+                <span class="tag">Shared Eternity</span>
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <div><span id="d" style="font-size: 45px; font-weight: 800; color: var(--primary);">0</span><p style="font-size: 9px; color: #555;">DAYS</p></div>
+                    <div><span id="h" style="font-size: 45px; font-weight: 800;">0</span><p style="font-size: 9px; color: #555;">HRS</p></div>
+                </div>
+            </div>
+
+            <div class="glass-card" style="border-left: 4px solid var(--accent);">
+                <span class="tag" style="color: var(--accent)">L'Oracle du Matin</span>
+                <p id="oracle-text" style="font-size: 14px; font-style: italic; color: #ddd; line-height: 1.6;">...</p>
+            </div>
+        </section>
+
+        <section id="gym" class="tab">
+            <h1>Training.</h1>
+            <div class="glass-card" style="text-align: center;">
+                <h2 id="gym-val" style="font-size: 60px; color: var(--accent);">0</h2>
+                <button onclick="addGym()" class="btn-action" style="background: var(--accent);">WORKOUT LOGGED +1</button>
+            </div>
+        </section>
+
+        <section id="books" class="tab">
+            <h1>Library.</h1>
+            <div class="glass-card">
+                <input type="text" id="bookIn" placeholder="Titre du livre...">
+                <button onclick="addBook()" class="btn-action">ADD TO COLLECTION 🌶️</button>
+            </div>
+            <div id="book-list"></div>
+        </section>
+
+        <section id="heart" class="tab">
+            <h1>Passion.</h1>
+            <div class="glass-card">
+                <span class="tag">Luna Cycle (Clique sur le jour 🩸)</span>
+                <div class="cal-grid" id="calendar"></div>
+                <div id="cycle-msg" style="margin-top: 15px; font-size: 12px; color: var(--crimson); text-align: center; font-style: italic;"></div>
+            </div>
+            <div class="glass-card" style="text-align: center;">
+                <h2 id="love-val" style="font-size: 50px; color: var(--crimson);">0</h2>
+                <button onclick="addLove()" class="btn-action" style="background: var(--crimson);">INTIMACY LOG ❤️</button>
+            </div>
+        </section>
+
+        <section id="lock" class="tab">
+            <h1>The Vault.</h1>
+            <div id="v-lock">
+                <div class="glass-card" style="text-align:center; padding: 60px 20px;">
+                    <p style="font-size: 12px; color: #444; margin-bottom: 20px;">Accès restreint aux souvenirs.</p>
+                    <button onclick="unlockVault()" class="btn-action" style="background:none; border: 1px solid var(--border);">DEVERROUILLER</button>
+                </div>
+            </div>
+            <div id="v-open" style="display:none;">
+                <div class="glass-card">
+                    <span class="tag">Upload Memory</span>
+                    <input type="text" id="photoUrl" placeholder="Coller le lien de l'image...">
+                    <button onclick="addPhoto()" class="btn-action">AJOUTER PHOTO</button>
+                </div>
+                <div class="photo-grid" id="gallery"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const START = new Date(2025, 9, 18);
+        const quotes = [
+            "Touche-la et tu meurs.", "Il brûlerait le monde pour son sourire.", "Je suis le monstre qu'elle a choisi.",
+            "Son âme est la seule chose que je veux posséder.", "Elle est mon péché préféré.", "Je préfère l'enfer avec elle que le ciel sans elle.",
+            "Elle n'est pas mon monde, elle est l'air que je respire.", "Je tuerais pour elle, mais je vivrais pour son regard."
+        ];
+
+        let state = JSON.parse(localStorage.getItem('ALICIA_APP_DB')) || { books: [], gym: 0, love: 0, period: null, photos: [] };
+        let eggC = 0;
+
+        function showTab(id, el) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+            if(id === 'heart') renderCal();
+            render();
+        }
+
+        function render() {
+            document.getElementById('gym-val').innerText = state.gym;
+            document.getElementById('love-val').innerText = state.love;
+            document.getElementById('book-list').innerHTML = state.books.map((b, i) => `
+                <div class="glass-card" style="padding:15px; margin-bottom:10px; display:flex; justify-content:space-between;">
+                    <span>📖 ${b}</span><span onclick="delBook(${i})" style="color:red; opacity:0.5">X</span>
+                </div>
+            `).reverse().join('');
+            
+            const now = new Date();
+            document.getElementById('oracle-text').innerText = `"${quotes[now.getDate() % quotes.length]}"`;
+
+            if(state.period) {
+                const diff = Math.floor((now - new Date(state.period)) / 86400000) % 28;
+                document.getElementById('cycle-msg').innerText = `Jour ${diff} du cycle. "${quotes[diff % quotes.length]}"`;
+            }
+        }
+
+        function renderCal() {
+            const container = document.getElementById('calendar');
+            container.innerHTML = "";
+            const today = new Date().getDate();
+            for(let i=1; i<=31; i++) {
+                const d = document.createElement('div');
+                d.className = 'cal-day' + (today === i ? ' today' : '');
+                if(state.period && new Date(state.period).getDate() === i) d.className += ' active';
+                d.innerText = i;
+                d.onclick = () => { let p = new Date(); p.setDate(i); state.period = p; save(); renderCal(); };
+                container.appendChild(d);
+            }
+        }
+
+        function unlockVault() { if(prompt("Code Secret :") === "1810") { document.getElementById('v-lock').style.display='none'; document.getElementById('v-open').style.display='block'; renderGallery(); } }
+        function addPhoto() { let u = document.getElementById('photoUrl').value; if(u){ state.photos.push(u); document.getElementById('photoUrl').value=""; save(); renderGallery(); } }
+        function renderGallery() { document.getElementById('gallery').innerHTML = state.photos.map(p => `<div class="photo-item"><img src="${p}"></div>`).reverse().join(''); }
+
+        function addGym() { state.gym++; save(); }
+        function addLove() { state.love++; save(); }
+        function addBook() { let v = document.getElementById('bookIn').value; if(v){ state.books.push(v); document.getElementById('bookIn').value=""; save(); } }
+        function delBook(i) { state.books.splice(i, 1); save(); }
+        function save() { localStorage.setItem('ALICIA_APP_DB', JSON.stringify(state)); render(); }
+
+        function egg() { eggC++; if(eggC === 5) { alert("MINE."); eggC=0; } }
+
+        setInterval(() => {
+            const diff = new Date() - START;
+            document.getElementById('d').innerText = Math.floor(diff / 86400000);
+            document.getElementById('h').innerText = Math.floor((diff / 3600000) % 24);
+        }, 1000);
+
+        render();
+    </script>
+</body>
+</html>
