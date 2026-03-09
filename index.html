@@ -16,33 +16,27 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* HEADER */
         header h1 { font-family: 'Playfair Display', serif; font-size: 50px; font-style: italic; line-height: 0.9; background: linear-gradient(180deg, #fff 30%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
         .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
 
-        /* CARDS */
         .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 40px; padding: 35px; margin-bottom: 20px; backdrop-filter: blur(40px); }
         .label { font-size: 9px; font-weight: 800; letter-spacing: 3px; opacity: 0.3; text-transform: uppercase; margin-bottom: 15px; display: block; }
         .big-val { font-size: 80px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
 
-        /* GYM */
         .gym-grid { display: flex; justify-content: space-between; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
         .stat-item span { display: block; font-size: 18px; font-weight: 800; }
         .stat-item small { font-size: 8px; opacity: 0.3; }
 
-        /* CALENDRIER */
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
         .day { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
         .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; bottom: 2px; }
         .day.period { background: rgba(255, 117, 195, 0.25); border-color: var(--p); }
 
-        /* VAULT */
         #gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
         .memory-img { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
         .glitch { animation: shake 0.2s linear 3; border-color: var(--red) !important; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
 
-        /* NAV */
         .nav { position: fixed; bottom: 30px; left: 5%; width: 90%; height: 85px; background: rgba(10, 10, 10, 0.85); border-radius: 45px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.08); }
         .nav-item { font-size: 26px; opacity: 0.2; cursor: pointer; transition: 0.3s; }
         .nav-item.active { opacity: 1; transform: scale(1.2); }
@@ -72,7 +66,7 @@
 
         <div id="gym" class="section">
             <div class="card">
-                <span class="label">Performance</span>
+                <span class="label">Performance Tracker</span>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <span class="big-val" id="steps">0</span>
                     <span style="font-size: 40px; cursor: pointer;" onclick="cheatSteps()">🦾</span>
@@ -81,7 +75,7 @@
                     <div class="stat-item"><span id="km">0.00</span><small>KM</small></div>
                     <div class="stat-item"><span id="kcal">0</span><small>KCAL</small></div>
                 </div>
-                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border:1px solid var(--p); color:var(--p); padding:15px; border-radius:20px; margin-top:20px; font-weight:800; font-size:10px;">DÉMARRER LA SESSION</button>
+                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border:1px solid var(--p); color:var(--p); padding:15px; border-radius:20px; margin-top:20px; font-weight:800; font-size:10px;">ACTIVER LES CAPTEURS</button>
             </div>
         </div>
 
@@ -98,16 +92,16 @@
 
         <div id="vault" class="section">
             <div id="lock" class="card" style="text-align: center;">
-                <span class="label">Vault</span>
+                <span class="label">Private Vault</span>
                 <input type="password" id="pass" placeholder="CODE 18/10" style="background:none; border:1px solid var(--p); color:#fff; padding:15px; border-radius:15px; width:100%; text-align:center; font-size:20px; margin:20px 0; outline:none;">
-                <button onclick="unlock()" style="background:var(--p); border:none; padding:15px; border-radius:15px; width:100%; font-weight:800; color:#000;">ENTRER</button>
+                <button onclick="unlock()" style="background:var(--p); border:none; padding:15px; border-radius:15px; width:100%; font-weight:800;">DÉVERROUILLER</button>
             </div>
             <div id="vault-content" style="display:none;">
                 <div class="card">
-                    <span class="label">Souvenirs</span>
+                    <span class="label">Galerie</span>
                     <div id="gallery-grid"></div>
                     <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="addMemory(event)">
-                    <button onclick="document.getElementById('file-input').click()" style="width:100%; padding:15px; border-radius:15px; border:1px solid var(--p); background:none; color:var(--p); font-weight:800; margin-top:20px;">+ AJOUTER</button>
+                    <button onclick="document.getElementById('file-input').click()" style="width:100%; padding:15px; border-radius:15px; border:1px solid var(--p); background:none; color:var(--p); font-weight:800; margin-top:20px;">+ AJOUTER UNE PHOTO</button>
                 </div>
             </div>
         </div>
@@ -122,8 +116,8 @@
 
     <script>
         let currentMode = 'star';
-        // RÉCUPÉRATION DE LA MÉMOIRE DES PAS
         let stepCount = parseInt(localStorage.getItem('alicia_total_steps') || "0");
+        let lastStepTime = 0;
         let titleClicks = 0;
         let pressTimer;
 
@@ -132,10 +126,7 @@
         window.onload = () => {
             const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
             document.getElementById('daily-oracle').innerText = `"${phrases[day % phrases.length]}"`;
-            
-            // Affichage initial des pas sauvegardés
             updateGymDisplay();
-            
             (JSON.parse(localStorage.getItem('alicia_memories') || "[]")).forEach(src => displayImg(src));
             renderCalendar();
         };
@@ -147,20 +138,7 @@
             el.classList.add('active');
         }
 
-        // --- EASTER EGGS ---
-        function triggerObsession() {
-            titleClicks++;
-            if(titleClicks >= 3) {
-                document.body.classList.toggle('obsession');
-                document.getElementById('status-text').innerText = document.body.classList.contains('obsession') ? "PROPRIÉTÉ PRIVÉE. ACCÈS RESTREINT." : "Possession: Active.";
-                titleClicks = 0;
-            }
-        }
-        function startLongPress() { pressTimer = setTimeout(() => { document.getElementById('daily-oracle').innerText = "\"Tu m'appartiens pour l'éternité.\""; }, 2000); }
-        function endLongPress() { clearTimeout(pressTimer); }
-        function cheatSteps() { stepCount += 2000; updateGymDisplay(); }
-
-        // --- GYM TRACKER (SAUVEGARDE AUTOMATIQUE) ---
+        // --- TRACKER RÉALISTE AVEC FILTRE ---
         function initGym() {
             if (typeof DeviceMotionEvent.requestPermission === 'function') {
                 DeviceMotionEvent.requestPermission().then(state => { if(state === 'granted') startGym(); });
@@ -172,23 +150,38 @@
             window.addEventListener('devicemotion', (e) => {
                 let acc = e.accelerationIncludingGravity;
                 let total = Math.sqrt(acc.x**2 + acc.y**2 + acc.z**2);
-                if(total > 11) { 
+                let now = Date.now();
+
+                // Filtre : Intensité > 18 et min 350ms entre deux pas
+                if (total > 18 && (now - lastStepTime > 350)) { 
                     stepCount++; 
+                    lastStepTime = now;
                     updateGymDisplay(); 
                 }
             });
         }
 
         function updateGymDisplay() {
-            let r = Math.floor(stepCount / 2);
-            document.getElementById('steps').innerText = r;
-            document.getElementById('km').innerText = (r * 0.0007).toFixed(2);
-            document.getElementById('kcal').innerText = Math.floor(r * 0.04);
-            // ON GRAVE DANS LA MÉMOIRE
+            document.getElementById('steps').innerText = stepCount;
+            document.getElementById('km').innerText = (stepCount * 0.0007).toFixed(2);
+            document.getElementById('kcal').innerText = Math.floor(stepCount * 0.04);
             localStorage.setItem('alicia_total_steps', stepCount);
         }
 
-        // --- CALENDRIER ---
+        // --- EASTER EGGS ---
+        function triggerObsession() {
+            titleClicks++;
+            if(titleClicks >= 3) {
+                document.body.classList.toggle('obsession');
+                document.getElementById('status-text').innerText = document.body.classList.contains('obsession') ? "ACCÈS PRIVÉ. NE PAS TOUCHER." : "Possession: Active.";
+                titleClicks = 0;
+            }
+        }
+        function startLongPress() { pressTimer = setTimeout(() => { document.getElementById('daily-oracle').innerText = "\"Tu m'appartiens pour l'éternité.\""; }, 2000); }
+        function endLongPress() { clearTimeout(pressTimer); }
+        function cheatSteps() { stepCount += 1000; updateGymDisplay(); }
+
+        // --- CALENDRIER & VAULT ---
         function setMode(m) {
             currentMode = m;
             document.getElementById('mode-star').style.borderColor = (m==='star') ? 'var(--p)' : 'rgba(255,255,255,0.1)';
@@ -202,16 +195,13 @@
                 cal.appendChild(d);
             }
         }
-
-        // --- VAULT ---
         function unlock() {
-            const lock = document.getElementById('lock');
             if(document.getElementById('pass').value === '18/10') {
-                lock.style.display = 'none';
+                document.getElementById('lock').style.display = 'none';
                 document.getElementById('vault-content').style.display = 'block';
             } else {
-                lock.classList.add('glitch');
-                setTimeout(() => lock.classList.remove('glitch'), 600);
+                document.getElementById('lock').classList.add('glitch');
+                setTimeout(() => document.getElementById('lock').classList.remove('glitch'), 600);
             }
         }
         function addMemory(event) {
@@ -228,10 +218,8 @@
             document.getElementById('gallery-grid').appendChild(img);
         }
 
-        // TIME TRACKER
         setInterval(() => { 
-            const start = new Date(2025, 9, 18);
-            document.getElementById('days').innerText = Math.floor((new Date() - start) / 86400000); 
+            document.getElementById('days').innerText = Math.floor((new Date() - new Date(2025, 9, 18)) / 86400000); 
         }, 1000);
     </script>
 </body>
