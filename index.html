@@ -3,231 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Alicia Studio">
-    <link rel="apple-touch-icon" href="https://i.pinimg.com/originals/de/1c/d1/de1cd19349886a11e8605c4860268595.jpg">
-
-    <title>Alicia Studio | Elite</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
-    
+    <title>ALICIA • MILLION EDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;800&family=Playfair+Display:italic,wght@900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff75c3; --accent: #7000ff; --crimson: #ff2e2e; --bg: #000000; --glass: rgba(255, 255, 255, 0.06); --border: rgba(255, 255, 255, 0.1); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        :root { --p: #ff75c3; --glass: rgba(255, 255, 255, 0.04); --red: #ff0040; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; transition: background 0.3s; }
         
-        body { 
-            background: var(--bg); 
-            color: #fff; 
-            height: 100vh; 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            padding-top: env(safe-area-inset-top); 
-            padding-bottom: env(safe-area-inset-bottom);
-        }
+        /* EFFET FLASH ROUGE (EASTER EGG) */
+        body.obsession { background: radial-gradient(circle, #400010 0%, #000 100%); }
 
-        #nebula { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(112, 0, 255, 0.1) 0%, transparent 80%); z-index: 0; pointer-events: none; }
+        .main { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 120px; }
+        .section { display: none; animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Barre de Nav App Style */
-        .nav-bar { 
-            position: fixed; 
-            bottom: 35px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            width: 92%; 
-            max-width: 400px; 
-            height: 75px; 
-            background: rgba(10, 10, 10, 0.85); 
-            backdrop-filter: blur(25px); 
-            border-radius: 40px; 
-            border: 1px solid var(--border); 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-            z-index: 1000;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
+        /* HEADER */
+        header h1 { font-family: 'Playfair Display', serif; font-size: 50px; font-style: italic; line-height: 0.9; background: linear-gradient(180deg, #fff 30%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; transition: 0.3s; }
+        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
 
-        .nav-item { font-size: 24px; opacity: 0.3; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; padding: 10px; }
-        .nav-item.active { opacity: 1; transform: translateY(-12px); filter: drop-shadow(0 0 10px var(--primary)); }
+        /* CARDS */
+        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 40px; padding: 35px; margin-bottom: 20px; backdrop-filter: blur(40px); }
+        .label { font-size: 9px; font-weight: 800; letter-spacing: 3px; opacity: 0.3; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .big-val { font-size: 80px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
 
-        .main-container { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 130px; z-index: 1; }
-        .tab { display: none; width: 100%; animation: slideIn 0.5s ease-out; }
-        .tab.active { display: block; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* GYM */
+        .gym-grid { display: flex; justify-content: space-between; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
+        .stat-item span { display: block; font-size: 18px; font-weight: 800; }
 
-        .glass-card { background: var(--glass); border: 1px solid var(--border); border-radius: 30px; padding: 22px; margin-bottom: 20px; backdrop-filter: blur(20px); }
-        h1 { font-family: 'Playfair Display', serif; font-size: 32px; font-style: italic; margin-bottom: 5px; }
-        .tag { font-size: 10px; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; font-weight: 800; margin-bottom: 12px; display: block; }
+        /* CALENDRIER */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .day { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 10px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+        .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; bottom: 2px; }
+        .day.period { background: rgba(255, 117, 195, 0.25); border-color: var(--p); }
 
-        /* Calendrier interactif */
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 15px; }
-        .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid transparent; }
-        .cal-day.active { background: var(--crimson); color: white; font-weight: 800; box-shadow: 0 0 15px var(--crimson); }
-        .cal-day.today { border-color: var(--primary); color: var(--primary); }
+        /* VAULT GLITCH */
+        .glitch { animation: shake 0.2s linear infinite; border-color: var(--red) !important; }
+        @keyframes shake { 0% { transform: translate(0); } 25% { transform: translate(5px); } 50% { transform: translate(-5px); } 100% { transform: translate(0); } }
 
-        /* Vault Gallery */
-        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 20px; }
-        .photo-item { aspect-ratio: 1; border-radius: 20px; background: #111; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+        #gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .memory-img { width: 100%; height: 150px; border-radius: 15px; object-fit: cover; }
 
-        .btn-action { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border: none; padding: 18px; width: 100%; border-radius: 18px; font-weight: 800; font-size: 11px; letter-spacing: 1px; margin-top: 10px; }
-        input { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 15px; padding: 15px; color: white; width: 100%; margin-bottom: 12px; outline: none; border: 1px solid transparent; }
-        input:focus { border-color: var(--primary); }
+        .nav { position: fixed; bottom: 30px; left: 5%; width: 90%; height: 85px; background: rgba(10, 10, 10, 0.85); border-radius: 45px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(50px); border: 1px solid rgba(255,255,255,0.08); }
+        .nav-item { font-size: 26px; opacity: 0.2; cursor: pointer; }
+        .nav-item.active { opacity: 1; transform: scale(1.2); }
     </style>
 </head>
 <body>
 
-    <div id="nebula"></div>
+    <div class="main">
+        <header>
+            <h1 id="main-title" onclick="triggerObsession()">Alicia.</h1>
+            <p class="status-line" id="status-text">Possession: Active.</p>
+        </header>
 
-    <nav class="nav-bar">
-        <div class="nav-item active" onclick="showTab('home', this)">🏠</div>
-        <div class="nav-item" onclick="showTab('gym', this)">🦾</div>
-        <div class="nav-item" onclick="showTab('books', this)">📖</div>
-        <div class="nav-item" onclick="showTab('heart', this)">❤️</div>
-        <div class="nav-item" onclick="showTab('lock', this)">🔒</div>
-    </nav>
-
-    <div class="main-container">
-        <section id="home" class="tab active">
-            <h1 onclick="egg()">Alicia Studio.</h1>
-            <p id="greet" style="color: var(--primary); font-size: 11px; font-weight: 600;">Possession: Active.</p>
-
-            <div class="glass-card" style="text-align: center; padding: 45px 20px; margin-top: 25px;">
-                <span class="tag">Shared Eternity</span>
-                <div style="display: flex; justify-content: center; gap: 20px;">
-                    <div><span id="d" style="font-size: 45px; font-weight: 800; color: var(--primary);">0</span><p style="font-size: 9px; color: #555;">DAYS</p></div>
-                    <div><span id="h" style="font-size: 45px; font-weight: 800;">0</span><p style="font-size: 9px; color: #555;">HRS</p></div>
+        <div id="home" class="section active">
+            <div class="card">
+                <span class="label">Shared Eternity</span>
+                <div style="display: flex; align-items: baseline;">
+                    <span class="big-val" id="days">0</span>
+                    <span style="font-size: 14px; opacity: 0.2; font-weight: 800; margin-left: 10px;">JOURS</span>
                 </div>
             </div>
-
-            <div class="glass-card" style="border-left: 4px solid var(--accent);">
-                <span class="tag" style="color: var(--accent)">L'Oracle du Matin</span>
-                <p id="oracle-text" style="font-size: 14px; font-style: italic; color: #ddd; line-height: 1.6;">...</p>
+            <div class="card" onmousedown="startLongPress()" onmouseup="endLongPress()" ontouchstart="startLongPress()" ontouchend="endLongPress()">
+                <span class="label">Daily Oracle (Long press for secret)</span>
+                <p id="daily-oracle" style="font-family: 'Playfair Display'; font-style: italic; font-size: 22px; line-height: 1.4;">"Chargement..."</p>
             </div>
-        </section>
+        </div>
 
-        <section id="gym" class="tab">
-            <h1>Training.</h1>
-            <div class="glass-card" style="text-align: center;">
-                <h2 id="gym-val" style="font-size: 60px; color: var(--accent);">0</h2>
-                <button onclick="addGym()" class="btn-action" style="background: var(--accent);">WORKOUT LOGGED +1</button>
+        <div id="gym" class="section">
+            <div class="card">
+                <span class="label">Gym Tracker</span>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="big-val" id="steps">0</span>
+                    <span style="font-size: 40px; cursor: pointer;" onclick="cheatSteps()">🦾</span>
+                </div>
+                <div class="gym-grid">
+                    <div class="stat-item"><span id="km">0.00</span><small>KM</small></div>
+                    <div class="stat-item"><span id="kcal">0</span><small>KCAL</small></div>
+                </div>
+                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border:1px solid var(--p); color:var(--p); padding:10px; border-radius:15px; margin-top:20px; font-size:9px; font-weight:800;">ACTIVER CAPTEURS</button>
             </div>
-        </section>
+        </div>
 
-        <section id="books" class="tab">
-            <h1>Library.</h1>
-            <div class="glass-card">
-                <input type="text" id="bookIn" placeholder="Titre du livre...">
-                <button onclick="addBook()" class="btn-action">ADD TO COLLECTION 🌶️</button>
-            </div>
-            <div id="book-list"></div>
-        </section>
-
-        <section id="heart" class="tab">
-            <h1>Passion.</h1>
-            <div class="glass-card">
-                <span class="tag">Luna Cycle (Clique sur le jour 🩸)</span>
+        <div id="cycle" class="section">
+            <div class="card">
+                <span class="label">Journal</span>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button class="btn-mode active" id="mode-star" onclick="setMode('star')" style="flex:1; padding:10px; border-radius:10px; background:none; border:1px solid var(--p); color:#fff; font-size:9px;">⭐ SEX</button>
+                    <button class="btn-mode" id="mode-period" onclick="setMode('period')" style="flex:1; padding:10px; border-radius:10px; background:none; border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:9px;">🩸 CYCLE</button>
+                </div>
                 <div class="cal-grid" id="calendar"></div>
-                <div id="cycle-msg" style="margin-top: 15px; font-size: 12px; color: var(--crimson); text-align: center; font-style: italic;"></div>
             </div>
-            <div class="glass-card" style="text-align: center;">
-                <h2 id="love-val" style="font-size: 50px; color: var(--crimson);">0</h2>
-                <button onclick="addLove()" class="btn-action" style="background: var(--crimson);">INTIMACY LOG ❤️</button>
-            </div>
-        </section>
+        </div>
 
-        <section id="lock" class="tab">
-            <h1>The Vault.</h1>
-            <div id="v-lock">
-                <div class="glass-card" style="text-align:center; padding: 60px 20px;">
-                    <p style="font-size: 12px; color: #444; margin-bottom: 20px;">Accès restreint aux souvenirs.</p>
-                    <button onclick="unlockVault()" class="btn-action" style="background:none; border: 1px solid var(--border);">DEVERROUILLER</button>
+        <div id="vault" class="section">
+            <div id="lock" class="card" style="text-align: center;">
+                <span class="label">Private Vault</span>
+                <input type="password" id="pass" placeholder="CODE 18/10" style="background:none; border:1px solid var(--p); color:#fff; padding:15px; border-radius:15px; width:100%; text-align:center; font-size:20px; margin:20px 0; outline:none;">
+                <button onclick="unlock()" style="background:var(--p); border:none; padding:15px; border-radius:15px; width:100%; font-weight:800;">ENTRER</button>
+            </div>
+            <div id="vault-content" style="display:none;">
+                <div class="card">
+                    <span class="label">Souvenirs</span>
+                    <div id="gallery-grid"></div>
+                    <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="addMemory(event)">
+                    <button onclick="document.getElementById('file-input').click()" style="width:100%; padding:15px; border-radius:15px; border:1px solid var(--p); background:none; color:var(--p); font-weight:800; margin-top:20px;">+ AJOUTER</button>
                 </div>
             </div>
-            <div id="v-open" style="display:none;">
-                <div class="glass-card">
-                    <span class="tag">Upload Memory</span>
-                    <input type="text" id="photoUrl" placeholder="Coller le lien de l'image...">
-                    <button onclick="addPhoto()" class="btn-action">AJOUTER PHOTO</button>
-                </div>
-                <div class="photo-grid" id="gallery"></div>
-            </div>
-        </section>
+        </div>
     </div>
 
+    <nav class="nav">
+        <div class="nav-item active" onclick="go('home', this)">🏠</div>
+        <div class="nav-item" onclick="go('gym', this)">🦾</div>
+        <div class="nav-item" onclick="go('cycle', this)">📖</div>
+        <div class="nav-item" onclick="go('vault', this)">🔒</div>
+    </nav>
+
     <script>
-        const START = new Date(2025, 9, 18);
-        const quotes = [
-            "Touche-la et tu meurs.", "Il brûlerait le monde pour son sourire.", "Je suis le monstre qu'elle a choisi.",
-            "Son âme est la seule chose que je veux posséder.", "Elle est mon péché préféré.", "Je préfère l'enfer avec elle que le ciel sans elle.",
-            "Elle n'est pas mon monde, elle est l'air que je respire.", "Je tuerais pour elle, mais je vivrais pour son regard."
-        ];
+        let currentMode = 'star';
+        let stepCount = 0;
+        let titleClicks = 0;
+        let pressTimer;
 
-        let state = JSON.parse(localStorage.getItem('ALICIA_APP_DB')) || { books: [], gym: 0, love: 0, period: null, photos: [] };
-        let eggC = 0;
+        // --- EASTER EGG 1: MODE OBSESSION ---
+        function triggerObsession() {
+            titleClicks++;
+            if(titleClicks === 3) {
+                document.body.classList.toggle('obsession');
+                document.getElementById('status-text').innerText = "PROPRIÉTÉ PRIVÉE. NE PAS TOUCHER.";
+                setTimeout(() => { titleClicks = 0; }, 2000);
+            }
+        }
 
-        function showTab(id, el) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        // --- EASTER EGG 2: SECRET ORACLE ---
+        function startLongPress() { pressTimer = setTimeout(() => { document.getElementById('daily-oracle').innerText = "\"Tu es ma plus belle addiction, Alicia.\""; }, 2000); }
+        function endLongPress() { clearTimeout(pressTimer); }
+
+        // --- EASTER EGG 3: CHEAT GYM ---
+        let cheatCount = 0;
+        function cheatSteps() {
+            cheatCount++;
+            if(cheatCount >= 5) {
+                stepCount += 2000;
+                updateGym();
+                alert("Mode Triche : +1000 pas ajoutés 😈");
+                cheatCount = 0;
+            }
+        }
+
+        // --- LOGIQUE DE BASE ---
+        const phrases = ["Il brûlerait le monde pour son sourire.", "Elle est sa seule prière.", "Son chaos est son équilibre.", "Possédée par son amour."];
+        window.onload = () => {
+            const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+            document.getElementById('daily-oracle').innerText = `"${phrases[day % phrases.length]}"`;
+            (JSON.parse(localStorage.getItem('alicia_memories') || "[]")).forEach(src => displayImg(src));
+        };
+
+        function go(id, el) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
-            if(id === 'heart') renderCal();
-            render();
         }
 
-        function render() {
-            document.getElementById('gym-val').innerText = state.gym;
-            document.getElementById('love-val').innerText = state.love;
-            document.getElementById('book-list').innerHTML = state.books.map((b, i) => `
-                <div class="glass-card" style="padding:15px; margin-bottom:10px; display:flex; justify-content:space-between;">
-                    <span>📖 ${b}</span><span onclick="delBook(${i})" style="color:red; opacity:0.5">X</span>
-                </div>
-            `).reverse().join('');
-            
-            const now = new Date();
-            document.getElementById('oracle-text').innerText = `"${quotes[now.getDate() % quotes.length]}"`;
-
-            if(state.period) {
-                const diff = Math.floor((now - new Date(state.period)) / 86400000) % 28;
-                document.getElementById('cycle-msg').innerText = `Jour ${diff} du cycle. "${quotes[diff % quotes.length]}"`;
+        function unlock() {
+            const card = document.getElementById('lock');
+            if(document.getElementById('pass').value === '18/10') {
+                card.style.display = 'none';
+                document.getElementById('vault-content').style.display = 'block';
+            } else {
+                card.classList.add('glitch');
+                setTimeout(() => card.classList.remove('glitch'), 500);
             }
         }
 
-        function renderCal() {
-            const container = document.getElementById('calendar');
-            container.innerHTML = "";
-            const today = new Date().getDate();
-            for(let i=1; i<=31; i++) {
-                const d = document.createElement('div');
-                d.className = 'cal-day' + (today === i ? ' today' : '');
-                if(state.period && new Date(state.period).getDate() === i) d.className += ' active';
-                d.innerText = i;
-                d.onclick = () => { let p = new Date(); p.setDate(i); state.period = p; save(); renderCal(); };
-                container.appendChild(d);
-            }
+        function addMemory(event) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                displayImg(e.target.result);
+                let m = JSON.parse(localStorage.getItem('alicia_memories') || "[]");
+                m.push(e.target.result); localStorage.setItem('alicia_memories', JSON.stringify(m));
+            };
+            reader.readAsDataURL(event.target.files[0]);
         }
 
-        function unlockVault() { if(prompt("Code Secret :") === "1810") { document.getElementById('v-lock').style.display='none'; document.getElementById('v-open').style.display='block'; renderGallery(); } }
-        function addPhoto() { let u = document.getElementById('photoUrl').value; if(u){ state.photos.push(u); document.getElementById('photoUrl').value=""; save(); renderGallery(); } }
-        function renderGallery() { document.getElementById('gallery').innerHTML = state.photos.map(p => `<div class="photo-item"><img src="${p}"></div>`).reverse().join(''); }
+        function displayImg(src) {
+            const img = document.createElement('img'); img.src = src; img.className = 'memory-img';
+            document.getElementById('gallery-grid').appendChild(img);
+        }
 
-        function addGym() { state.gym++; save(); }
-        function addLove() { state.love++; save(); }
-        function addBook() { let v = document.getElementById('bookIn').value; if(v){ state.books.push(v); document.getElementById('bookIn').value=""; save(); } }
-        function delBook(i) { state.books.splice(i, 1); save(); }
-        function save() { localStorage.setItem('ALICIA_APP_DB', JSON.stringify(state)); render(); }
+        function initGym() { if (typeof DeviceMotionEvent.requestPermission === 'function') DeviceMotionEvent.requestPermission().then(r => { if(r=='granted') startGym(); }); else startGym(); }
+        function startGym() {
+            window.addEventListener('devicemotion', (e) => {
+                if(Math.abs(e.accelerationIncludingGravity.x) > 15) { stepCount++; updateGym(); }
+            });
+            document.getElementById('gym-btn').innerText = "TRACKING LIVE ✅";
+        }
+        function updateGym() {
+            let r = Math.floor(stepCount/2);
+            document.getElementById('steps').innerText = r;
+            document.getElementById('km').innerText = (r*0.0007).toFixed(2);
+            document.getElementById('kcal').innerText = Math.floor(r*0.04);
+        }
 
-        function egg() { eggC++; if(eggC === 5) { alert("MINE."); eggC=0; } }
+        function setMode(m) { 
+            currentMode = m; 
+            document.querySelectorAll('.btn-mode').forEach(b => b.style.borderColor = 'rgba(255,255,255,0.1)');
+            document.getElementById('mode-'+m).style.borderColor = 'var(--p)';
+        }
+        const cal = document.getElementById('calendar');
+        for(let i=1; i<=31; i++) {
+            let d = document.createElement('div'); d.className = 'day'; d.innerText = i;
+            d.onclick = () => { if(currentMode === 'star') d.classList.toggle('starred'); else d.classList.toggle('period'); };
+            cal.appendChild(d);
+        }
 
-        setInterval(() => {
-            const diff = new Date() - START;
-            document.getElementById('d').innerText = Math.floor(diff / 86400000);
-            document.getElementById('h').innerText = Math.floor((diff / 3600000) % 24);
-        }, 1000);
-
-        render();
+        setInterval(() => { document.getElementById('days').innerText = Math.floor((new Date() - new Date(2025, 9, 18)) / 86400000); }, 1000);
     </script>
 </body>
 </html>
