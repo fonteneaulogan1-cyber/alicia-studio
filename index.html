@@ -3,116 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ALICIA • MILLION EDITION</title>
+    <title>ALICIA • DARK EDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;800&family=Playfair+Display:italic,wght@900&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #ff75c3; --glass: rgba(255, 255, 255, 0.04); --red: #ff0040; --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
+        :root { --p: #ff75c3; --glass: rgba(255, 255, 255, 0.04); --safe-top: env(safe-area-inset-top); --safe-bottom: env(safe-area-inset-bottom); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; padding-top: var(--safe-top); transition: background 0.8s; }
-        body.obsession { background: radial-gradient(circle at center, #400010 0%, #000 100%); }
+        body { background: #000; color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; padding-top: var(--safe-top); }
 
-        /* STATUS BAR (NOUVEAU) */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; font-size: 11px; font-weight: 800; opacity: 0.8; letter-spacing: 1px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 25px; font-size: 11px; font-weight: 800; opacity: 0.8; }
         #clock { font-size: 14px; font-weight: 300; }
-        .vibe-tag { color: var(--p); font-size: 9px; text-transform: uppercase; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .main { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: calc(140px + var(--safe-bottom)); }
         
-        header { margin: 10px 0 30px 0; }
-        header h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-style: italic; line-height: 0.9; color: #fff; }
-        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+        .main { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: calc(140px + var(--safe-bottom)); }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-style: italic; line-height: 0.9; cursor: pointer; }
+        .status-line { color: var(--p); font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: help; }
 
         .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 35px; padding: 25px; margin-bottom: 20px; backdrop-filter: blur(30px); }
         .label { font-size: 9px; font-weight: 800; letter-spacing: 2px; opacity: 0.5; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        .big-val { font-size: 75px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
+        .big-val { font-size: 70px; font-weight: 200; letter-spacing: -4px; line-height: 1; color: var(--p); }
 
-        /* JOURNAL MODES */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .mini-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 25px; padding: 20px; }
+
         .mode-selector { display: flex; gap: 8px; margin-bottom: 20px; }
-        .mode-btn { flex: 1; padding: 12px; border-radius: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .mode-btn { flex: 1; padding: 12px; border-radius: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; font-size: 10px; font-weight: 800; }
         .mode-btn.active { border-color: var(--p); background: rgba(255, 117, 195, 0.1); }
-
-        /* CALENDRIER */
+        
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
         .day { aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
         .day.starred::after { content: '⭐'; font-size: 7px; position: absolute; top: 4px; right: 4px; }
         .day.period { border-color: var(--p); background: rgba(255, 117, 195, 0.15); }
-        .day.has-note::before { content: ''; width: 3px; height: 3px; background: #fff; border-radius: 50%; position: absolute; bottom: 4px; }
 
-        /* NAV DOCK */
-        .nav { position: fixed; bottom: calc(25px + var(--safe-bottom)); left: 5%; width: 90%; height: 80px; background: rgba(15, 15, 15, 0.95); border-radius: 40px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
+        .photo-card { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: #111; }
+        .photo-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+        .photo-caption { padding: 8px; font-size: 10px; text-align: center; color: rgba(255,255,255,0.6); }
+
+        .nav { position: fixed; bottom: calc(25px + var(--safe-bottom)); left: 5%; width: 90%; height: 80px; background: rgba(10, 10, 10, 0.98); border-radius: 40px; display: flex; justify-content: space-around; align-items: center; border: 1px solid rgba(255,255,255,0.1); z-index: 1000; }
         .nav-item { font-size: 24px; opacity: 0.3; transition: 0.3s; }
-        .nav-item.active { opacity: 1; transform: translateY(-5px); color: var(--p); }
+        .nav-item.active { opacity: 1; color: var(--p); transform: translateY(-5px); }
 
-        /* SECRET OVERLAY */
-        #secret-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index: 4000; flex-direction:column; align-items:center; justify-content:center; text-align: center; }
+        input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: #fff; padding: 18px; margin: 10px 0; outline: none; text-align: center; }
+        .btn-main { background: var(--p); width: 100%; padding: 18px; border-radius: 20px; color: #000; font-weight: 800; border: none; text-transform: uppercase; }
         
-        #note-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 3000; align-items: center; justify-content: center; padding: 20px; }
         .modal-content { background: #0a0a0a; border: 1px solid var(--p); border-radius: 35px; padding: 30px; width: 100%; max-width: 350px; }
-        textarea { width: 100%; height: 120px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; color: #fff; padding: 15px; margin: 15px 0; outline: none; }
 
-        .memory-img { width: 100%; height: 150px; border-radius: 20px; object-fit: cover; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
         .section { display: none; }
-        .section.active { display: block; animation: slideUp 0.4s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .section.active { display: block; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div id="clock">00:00</div>
-        <div class="vibe-tag" id="vibe-text">ETERNAL CONNECTION</div>
-        <div style="display: flex; align-items: center; gap: 4px;">100% <span style="color:var(--p)">❤️</span></div>
-    </div>
-
-    <div id="secret-overlay" onclick="this.style.display='none'">
-        <h2 style="font-family: 'Playfair Display'; font-style: italic; font-size: 40px;">Tu m'appartiens.</h2>
-        <p style="color:var(--p); margin-top: 20px; letter-spacing: 2px; font-size: 10px;">PROPRIÉTÉ PRIVÉE</p>
+        <div style="color: var(--p); font-size: 9px; letter-spacing: 2px;">POUR TOUJOURS S. ❤️</div>
     </div>
 
     <div class="main">
         <header>
-            <h1 onclick="triggerObsession()">Alicia.</h1>
-            <p class="status-line">OWNER: MILLION EDITION</p>
+            <h1 onclick="vibrate([100,50,100,50,300])">Alicia.</h1>
+            <p class="status-line" onclick="alert('Tu lui appartiens corps et âme.')">OWNER: MILLION EDITION</p>
         </header>
 
         <div id="home" class="section active">
             <div class="card">
-                <span class="label">Shared Eternity</span>
-                <div style="display: flex; align-items: baseline;">
-                    <span class="big-val" id="days">0</span>
-                    <span style="font-size: 14px; opacity: 0.4; font-weight: 800; margin-left: 10px;">JOURS</span>
-                </div>
+                <span class="label">Obsession Partagée</span>
+                <span class="big-val" id="days">0</span>
+                <span style="font-size: 16px; font-weight: 800; display: block; margin-top: 5px;" id="hours-total">0 HEURES</span>
             </div>
-            <div class="card">
-                <span class="label">L'Oracle du Matin</span>
-                <p id="daily-oracle" style="font-family: 'Playfair Display'; font-style: italic; font-size: 22px; line-height: 1.4;">"..."</p>
+            
+            <div class="card" style="border-left: 3px solid var(--p);">
+                <span class="label">L'Oracle de Minuit</span>
+                <p id="daily-quote" style="font-family: 'Playfair Display'; font-style: italic; font-size: 20px; line-height: 1.3;">"..."</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="mini-card" onclick="openBookManager()" id="book-card">
+                    <span class="label">Lectures</span>
+                    <span style="font-size: 16px; font-weight: 800; color: var(--p);" id="book-count-text">0 LIVRES</span>
+                </div>
+                <div class="mini-card">
+                    <span class="label">Statut</span>
+                    <span style="font-size: 13px; font-weight: 800;">PROTÉGÉE</span>
+                </div>
             </div>
         </div>
 
         <div id="gym" class="section">
             <div class="card">
-                <span class="label">Performance Tracker</span>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="big-val" id="steps">0</span>
-                    <span style="font-size: 35px;" onclick="vibrate(50); cheatSteps();">🦾</span>
-                </div>
+                <span class="label">Gym Tracker</span>
+                <span class="big-val" id="steps-val">0</span>
                 <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
-                    <div><span id="km" style="display:block; font-size:20px; font-weight:800;">0.00</span><small style="font-size:9px; opacity:0.4;">KM</small></div>
-                    <div style="text-align:right;"><span id="kcal" style="display:block; font-size:20px; font-weight:800;">0</span><small style="font-size:9px; opacity:0.4;">KCAL</small></div>
+                    <div><span id="km" style="font-size: 18px; font-weight: 800;">0.00</span><br><small style="opacity: 0.4;">KM</small></div>
+                    <div style="text-align: right;"><span id="kcal" style="font-size: 18px; font-weight: 800;">0</span><br><small style="opacity: 0.4;">KCAL</small></div>
                 </div>
-                <button onclick="vibrate(30); initGym();" id="gym-btn" style="width:100%; background:var(--p); color:#000; border:none; padding:20px; border-radius:25px; margin-top:20px; font-weight:800; font-size:11px; letter-spacing:1px;">LANCER LE TRACKING</button>
+                <button onclick="initGym()" id="gym-btn" style="width:100%; background:none; border: 1px solid var(--p); color:var(--p); padding:18px; border-radius:20px; margin-top:20px; font-weight:800;">DÉMARRER</button>
             </div>
         </div>
 
         <div id="cycle" class="section">
             <div class="card">
-                <span class="label">Life & Intimacy Journal</span>
+                <span class="label">Journal de Vie</span>
                 <div class="mode-selector">
-                    <button id="btn-star" class="mode-btn active" onclick="setCalMode('star')">⭐ SEX</button>
+                    <button id="btn-star" class="mode-btn active" onclick="setCalMode('star')">⭐</button>
                     <button id="btn-period" class="mode-btn" onclick="setCalMode('period')">🩸 CYCLE</button>
-                    <button id="btn-note" class="mode-btn" onclick="setCalMode('note')">📝 JOURNAL</button>
+                    <button id="btn-note" class="mode-btn" onclick="setCalMode('note')">📝 NOTES</button>
                 </div>
                 <div class="cal-grid" id="calendar"></div>
             </div>
@@ -120,95 +115,152 @@
 
         <div id="vault" class="section">
             <div id="lock" class="card" style="text-align: center;">
-                <span class="label">Galerie Privée</span>
-                <input type="password" id="pass" placeholder="CODE 18/10" style="background:none; border:1px solid var(--p); color:#fff; padding:18px; border-radius:20px; width:100%; text-align:center; margin:20px 0; font-size:18px; outline:none;">
-                <button onclick="vibrate(40); unlock()" style="background:var(--p); border:none; padding:18px; border-radius:20px; width:100%; font-weight:800; color:#000;">DÉVERROUILLER</button>
+                <span class="label">Vault</span>
+                <input type="password" id="pass" placeholder="••••" style="font-size: 24px; letter-spacing: 5px;">
+                <button onclick="unlock()" class="btn-main">Ouvrir</button>
             </div>
+            
             <div id="vault-content" style="display:none;">
                 <div class="card">
                     <span class="label">Galerie Privée</span>
-                    <div id="gallery-grid"></div>
-                    <p id="empty-msg" style="text-align:center; opacity:0.4; font-size:12px; font-style:italic; margin: 40px 0;">"Espace prêt pour vos souvenirs."</p>
-                    <input type="file" id="file-input" accept="image/*" style="display:none;" onchange="addMemory(event)">
-                    <button onclick="document.getElementById('file-input').click()" style="width:100%; padding:18px; border-radius:25px; border:1px solid var(--p); background:none; color:var(--p); font-weight:800; margin-top:20px;">+ AJOUTER PHOTO</button>
+                    <div id="gallery-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px;"></div>
+                    <input type="file" id="photo-in" accept="image/*" style="display:none" onchange="addPhoto(event)">
+                    <button onclick="document.getElementById('photo-in').click()" class="btn-main" style="background:none; border:1px solid var(--p); color:var(--p);">+ Ajouter</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="note-modal">
-        <div class="modal-content">
-            <span class="label" id="modal-date-label">Note</span>
-            <textarea id="note-text" placeholder="Écris ici ton moment..."></textarea>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="closeModal()" style="flex:1; background:none; border:1px solid #333; color:#666; padding:18px; border-radius:20px;">ANNULER</button>
-                <button onclick="vibrate(30); saveNote()" style="flex:1; background:var(--p); border:none; color:#000; padding:18px; border-radius:20px; font-weight:800;">SAUVER</button>
-            </div>
-        </div>
-    </div>
+    <div id="modal"><div class="modal-content" id="modal-inner"></div></div>
 
     <nav class="nav">
-        <div class="nav-item active" onclick="go('home', this); vibrate(10);">🏠</div>
-        <div class="nav-item" onclick="go('gym', this); vibrate(10);">🦾</div>
-        <div class="nav-item" onclick="go('cycle', this); vibrate(10);">📖</div>
-        <div class="nav-item" onclick="go('vault', this); vibrate(10);">🔒</div>
+        <div class="nav-item active" onclick="go('home', this)">🏠</div>
+        <div class="nav-item" onclick="go('gym', this)">🦾</div>
+        <div class="nav-item" onclick="go('cycle', this)">📖</div>
+        <div class="nav-item" onclick="go('vault', this)">🔒</div>
     </nav>
 
     <script>
+        const quotes = [
+            "Je te traquerai jusque dans tes rêves.",
+            "Tu n'es pas à moi, tu ES moi.",
+            "Le monstre en moi ne s'apaise que près de toi.",
+            "Ta peur est délicieuse, mais ton amour est ma drogue.",
+            "Je brûlerai le monde pour te voir sourire dans les cendres.",
+            "Même la mort n'oserait pas te prendre à moi.",
+            "Tu es mon chaos préféré.",
+            "Regarde-moi. Personne d'autre n'existe.",
+            "Ton cœur bat pour moi, ou il ne bat plus.",
+            "Je t'ai choisie avant même de te connaître.",
+            "Chaque cicatrice raconte notre histoire.",
+            "Sombre, possessif, éternel.",
+            "Tu es le péché que je recommencerais sans fin.",
+            "Mon obsession n'a pas de limites.",
+            "T'aimer est ma plus belle malédiction.",
+            "Je suis l'ombre qui te protège du soleil.",
+            "Ne fuis pas, j'aime trop la chasse.",
+            "Tu es ma seule lumière dans ce noir.",
+            "Ton âme m'appartient, le reste n'est que détail.",
+            "Un mot de toi et je tue pour toi.",
+            "Laisse-moi être ton plus beau cauchemar.",
+            "L'éternité est trop courte pour nous deux.",
+            "Ta soumission est mon trône.",
+            "Je t'ai gravée dans ma peau.",
+            "Rien n'est interdit entre nous.",
+            "Le danger est notre langage.",
+            "Plus tu résistes, plus je te veux.",
+            "Tu es ma reine de cristal.",
+            "Un amour qui fait mal est un amour qui vit.",
+            "Silence. Je t'écoute respirer.",
+            "Nous sommes les rois du désastre."
+        ];
+
         let calMode = 'star';
-        let stepCount = parseInt(localStorage.getItem('alicia_total_steps') || "0");
-        let lastStepTime = 0;
-        let selectedDay = null;
-        let data = JSON.parse(localStorage.getItem('alicia_cal_data') || '{"stars":[], "periods":[], "notes":{}}');
+        let stepCount = parseInt(localStorage.getItem('alicia_steps') || "0");
+        let data = JSON.parse(localStorage.getItem('alicia_data') || '{"stars":[], "periods":[], "notes":{}, "booksCount":0, "bookList":[]}');
+        let photos = JSON.parse(localStorage.getItem('alicia_photos') || '[]');
 
         window.onload = () => {
-            document.getElementById('days').innerText = Math.floor((new Date() - new Date(2025, 9, 18)) / 86400000);
-            updateGymDisplay();
-            renderCalendar();
-            initShake();
-            updateClock();
-            setInterval(updateClock, 1000);
-            let mems = JSON.parse(localStorage.getItem('alicia_memories') || "[]");
-            if(mems.length > 0) document.getElementById('empty-msg').style.display = 'none';
-            mems.forEach(src => displayImg(src));
-            const phrases = ["Il brûlerait le monde pour son sourire.", "Son nom est le seul mot qu'il murmure.", "Son chaos est son équilibre.", "Possédée par son amour."];
-            document.getElementById('daily-oracle').innerText = `"${phrases[Math.floor(Math.random()*phrases.length)]}"`;
+            updateTime(); setInterval(updateTime, 1000);
+            updateBookDisplay(); renderCalendar(); updateGymDisplay();
+            setDailyQuote();
+            setupReset('book-card', resetBooks);
+            setupReset('steps-val', resetSteps);
         };
 
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-            const vibes = ["ETERNAL CONNECTION", "STILL YOURS", "OBSESSED", "CONNECTED", "MY ONLY ONE"];
-            document.getElementById('vibe-text').innerText = vibes[Math.floor(now.getMinutes() / 12)];
+        function setDailyQuote() {
+            const day = new Date().getDate();
+            document.getElementById('daily-quote').innerText = `"${quotes[day % quotes.length]}"`;
         }
 
-        function vibrate(ms) { if(navigator.vibrate) navigator.vibrate(ms); }
+        function updateTime() {
+            const now = new Date();
+            const diff = now - new Date(2025, 9, 18);
+            document.getElementById('days').innerText = Math.floor(diff / 86400000);
+            document.getElementById('hours-total').innerText = Math.floor(diff / 3600000) + " HEURES";
+            document.getElementById('clock').innerText = now.getHours().toString().padStart(2,'0') + ":" + now.getMinutes().toString().padStart(2,'0');
+        }
+
+        function unlock() {
+            if(document.getElementById('pass').value === '19/10') {
+                vibrate([50, 30, 50]);
+                document.getElementById('lock').style.display = 'none';
+                document.getElementById('vault-content').style.display = 'block';
+                renderPhotos();
+            } else {
+                vibrate(200); document.getElementById('pass').value = "";
+                document.getElementById('lock').style.animation = "shake 0.4s";
+                setTimeout(() => { document.getElementById('lock').style.animation = ""; }, 400);
+            }
+        }
+
+        function addPhoto(event) {
+            const file = event.target.files[0]; if(!file) return;
+            const caption = prompt("Une légende pour ce souvenir ?") || "";
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photos.push({src: e.target.result, cap: caption});
+                localStorage.setItem('alicia_photos', JSON.stringify(photos));
+                renderPhotos();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderPhotos() {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = photos.map((p, i) => `
+                <div class="photo-card" onclick="if(confirm('Supprimer ce souvenir ?')){photos.splice(${i},1); localStorage.setItem('alicia_photos', JSON.stringify(photos)); renderPhotos();}">
+                    <img src="${p.src}">
+                    <div class="photo-caption">${p.cap}</div>
+                </div>
+            `).join('');
+        }
+
+        function setupReset(id, callback) {
+            let timer; const el = document.getElementById(id);
+            el.addEventListener('touchstart', () => { timer = setTimeout(callback, 2000); });
+            el.addEventListener('touchend', () => { clearTimeout(timer); });
+        }
+        function resetSteps() { if(confirm("Réinitialiser tes efforts ?")) { stepCount = 0; updateGymDisplay(); vibrate(50); } }
+        function resetBooks() { if(confirm("Vider ta bibliothèque ?")) { data.booksCount = 0; data.bookList = []; updateBookDisplay(); saveData(); vibrate(50); } }
+
+        function openBookManager() {
+            let listHtml = data.bookList.map((b, i) => `<div style="display:flex; justify-content:space-between; padding:8px; background:rgba(255,255,255,0.03); border-radius:10px; margin-bottom:5px; font-size:12px;"><span>${b}</span><span onclick="data.bookList.splice(${i},1); openBookManager(); saveData();">✕</span></div>`).join('');
+            document.getElementById('modal-inner').innerHTML = `
+                <span class="label">Lectures Noires</span>
+                <input type="number" id="nb-books" value="${data.booksCount}">
+                <div style="max-height: 120px; overflow-y: auto;">${listHtml}</div>
+                <input type="text" id="new-book" placeholder="Titre du livre...">
+                <button onclick="const n=document.getElementById('new-book').value; if(n)data.bookList.push(n); data.booksCount=document.getElementById('nb-books').value; saveData(); updateBookDisplay(); openBookManager();" class="btn-main">Enregistrer</button>
+                <p onclick="document.getElementById('modal').style.display='none'" style="text-align:center; margin-top:15px; font-size:10px; opacity:0.5">FERMER</p>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+        }
 
         function go(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-        }
-
-        function initShake() {
-            let lastShake = 0;
-            window.addEventListener('devicemotion', (e) => {
-                let acc = e.acceleration;
-                if(!acc || !acc.x) return;
-                let speed = Math.abs(acc.x + acc.y + acc.z);
-                if(speed > 45 && (Date.now() - lastShake > 2000)) {
-                    vibrate([100, 50, 100]);
-                    document.getElementById('secret-overlay').style.display = 'flex';
-                    lastShake = Date.now();
-                }
-            });
-        }
-
-        function setCalMode(m) {
-            calMode = m;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + m).classList.add('active');
+            document.getElementById(id).classList.add('active'); el.classList.add('active');
         }
 
         function renderCalendar() {
@@ -217,81 +269,34 @@
                 let d = document.createElement('div'); d.className = 'day';
                 if(data.stars.includes(i)) d.classList.add('starred');
                 if(data.periods.includes(i)) d.classList.add('period');
-                if(data.notes[i]) d.classList.add('has-note');
-                d.innerText = i; d.onclick = () => handleDayClick(i);
+                d.innerText = i; d.onclick = () => {
+                    if(calMode==='star'){ if(data.stars.includes(i)) data.stars=data.stars.filter(x=>x!==i); else data.stars.push(i); }
+                    else if(calMode==='period'){ if(data.periods.includes(i)) data.periods=data.periods.filter(x=>x!==i); else data.periods.push(i); }
+                    saveData(); renderCalendar();
+                };
                 cal.appendChild(d);
             }
         }
 
-        function handleDayClick(day) {
-            vibrate(20);
-            if(calMode === 'star') {
-                if(data.stars.includes(day)) data.stars = data.stars.filter(x => x !== day);
-                else data.stars.push(day);
-            } else if(calMode === 'period') {
-                if(data.periods.includes(day)) data.periods = data.periods.filter(x => x !== day);
-                else data.periods.push(day);
-            } else {
-                selectedDay = day;
-                document.getElementById('modal-date-label').innerText = "JOUR " + day;
-                document.getElementById('note-text').value = data.notes[day] || "";
-                document.getElementById('note-modal').style.display = 'flex';
-                return;
-            }
-            saveData(); renderCalendar();
-        }
-
-        function saveNote() {
-            data.notes[selectedDay] = document.getElementById('note-text').value;
-            saveData(); closeModal(); renderCalendar();
-        }
-        function closeModal() { document.getElementById('note-modal').style.display = 'none'; }
-        function saveData() { localStorage.setItem('alicia_cal_data', JSON.stringify(data)); }
-
+        function updateBookDisplay() { document.getElementById('book-count-text').innerText = data.booksCount + " LIVRES"; }
+        function saveData() { localStorage.setItem('alicia_data', JSON.stringify(data)); }
+        function vibrate(ms) { if(navigator.vibrate) navigator.vibrate(ms); }
         function initGym() {
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission().then(s => { if(s==='granted') startGym(); });
-            } else { startGym(); }
-        }
-        function startGym() {
-            document.getElementById('gym-btn').innerText = "TRACKING LIVE ✅";
+            document.getElementById('gym-btn').innerText = "TRACKING... ✅";
             window.addEventListener('devicemotion', (e) => {
-                let total = Math.sqrt(e.accelerationIncludingGravity.x**2 + e.accelerationIncludingGravity.y**2 + e.accelerationIncludingGravity.z**2);
-                if (total > 19 && (Date.now() - lastStepTime > 350)) {
-                    stepCount++; lastStepTime = Date.now(); updateGymDisplay();
-                }
+                let t = Math.sqrt(e.accelerationIncludingGravity.x**2 + e.accelerationIncludingGravity.y**2 + e.accelerationIncludingGravity.z**2);
+                if (t > 15) { stepCount++; updateGymDisplay(); }
             });
         }
         function updateGymDisplay() {
-            document.getElementById('steps').innerText = stepCount;
+            document.getElementById('steps-val').innerText = stepCount;
             document.getElementById('km').innerText = (stepCount * 0.0007).toFixed(2);
             document.getElementById('kcal').innerText = Math.floor(stepCount * 0.04);
-            localStorage.setItem('alicia_total_steps', stepCount);
+            localStorage.setItem('alicia_steps', stepCount);
         }
-
-        function unlock() {
-            if(document.getElementById('pass').value === '18/10') {
-                vibrate([50, 50, 50]);
-                document.getElementById('lock').style.display = 'none';
-                document.getElementById('vault-content').style.display = 'block';
-            }
-        }
-        function triggerObsession() { vibrate(30); document.body.classList.toggle('obsession'); }
-        function cheatSteps() { stepCount += 500; updateGymDisplay(); }
-        
-        function addMemory(event) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                displayImg(e.target.result);
-                document.getElementById('empty-msg').style.display = 'none';
-                let m = JSON.parse(localStorage.getItem('alicia_memories') || "[]");
-                m.push(e.target.result); localStorage.setItem('alicia_memories', JSON.stringify(m));
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-        function displayImg(src) {
-            const img = document.createElement('img'); img.src = src; img.className = 'memory-img';
-            document.getElementById('gallery-grid').prepend(img);
+        function setCalMode(m) {
+            calMode = m; document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + m).classList.add('active');
         }
     </script>
 </body>
